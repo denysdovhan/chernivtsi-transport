@@ -4,7 +4,7 @@ const transportCV = require('./transport-cv');
 
 const app = express();
 
-const PORT = process.env.HOST || 3000;
+const PORT = process.env.PORT || 3000;
 
 function fetchGPS() {
   return transportCV
@@ -39,4 +39,4 @@ app.get('*', (req, res) => {
     });
 });
 
-app.listen(PORT, () => console.log(`Listen on ${HOST}!`));
+app.listen(PORT, () => console.log(`Listen on ${PORT}!`));
