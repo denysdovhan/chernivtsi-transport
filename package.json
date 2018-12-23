@@ -1,15 +1,12 @@
 {
-  "name": "transport-tracker",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "Denys Dovhan <denysdovhan@gmail.com> (http://denysdovhan.com/)",
-  "license": "ISC",
+  "name": "gps",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
+    "express": "^4.16.4",
     "isomorphic-fetch": "^2.2.1"
+  },
+  "scripts": {
+    "start": "node index.js"
   }
 }
