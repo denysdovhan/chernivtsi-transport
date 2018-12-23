@@ -4,6 +4,8 @@ const transportCV = require('./transport-cv');
 
 const app = express();
 
+const PORT = process.env.HOST || 3000;
+
 function fetchGPS() {
   return transportCV
     .fetchToken()
@@ -37,4 +39,4 @@ app.get('*', (req, res) => {
     });
 });
 
-app.listen(3000, () => console.log('Listen!'));
+app.listen(PORT, () => console.log(`Listen on ${HOST}!`));
