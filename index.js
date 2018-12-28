@@ -1,11 +1,14 @@
 const express = require('express');
+const cors = require('cors');
 const transGPS = require('./trans-gps');
 const transportCV = require('./transport-cv');
 const EventStream = require('./event-stream');
 
 const app = express();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
+
+app.use(cors());
 
 function fetchRoutes() {
   return transportCV
@@ -79,6 +82,6 @@ app.get('/events', (req, res) => {
   });
 });
 
-app.use('/app', express.static('app'));
+app.use('/app', express.static('app-old'));
 
 app.listen(PORT, () => console.log(`Listen on ${PORT}!`));
