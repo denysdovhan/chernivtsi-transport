@@ -1,4 +1,6 @@
-# editorconfig.org
+# Editorconfig
+# https://editorconfig.org
+
 root = true
 
 [*]
