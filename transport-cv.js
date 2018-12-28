@@ -83,7 +83,8 @@ function fetchToken() {
 function fetchRoutes(token) {
   return fetch(api.routes, {
     headers: {
-      cookie: `JSESSIONID=${token}`
+      cookie: `JSESSIONID=${token}`,
+      connection: 'keep-alive'
     }
   })
     .then(response => response.json())
@@ -94,7 +95,8 @@ function fetchRoutes(token) {
 function fetchTrackers(token) {
   return fetch(api.trackers, {
     headers: {
-      cookie: `JSESSIONID=${token}`
+      cookie: `JSESSIONID=${token}`,
+      connection: 'keep-alive'
     }
   })
     .then(response => response.json())

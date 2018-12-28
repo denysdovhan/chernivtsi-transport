@@ -83,14 +83,22 @@ function toTracker({
 }
 
 function fetchRoutes() {
-  return fetch(api.routes)
+  return fetch(api.routes, {
+    headers: {
+      Connection: 'keep-alive'
+    }
+  })
     .then(response => response.json())
     .then(json => Object.entries(json))
     .then(entries => entries.map(([key, route]) => toRoute(route)));
 }
 
 function fetchTrackers() {
-  return fetch(api.trackers)
+  return fetch(api.trackers, {
+    headers: {
+      Connection: 'keep-alive'
+    }
+  })
     .then(res => res.json())
     .then(json => Object.entries(json))
     .then(entries => entries.map(([key, tracker]) => toTracker(tracker)));

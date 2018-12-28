@@ -4,9 +4,11 @@
   "private": true,
   "dependencies": {
     "express": "^4.16.4",
+    "forever": "^0.15.3",
     "isomorphic-fetch": "^2.2.1"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "forever index.js",
+    "start:dev": "forever --watch index.js"
   }
 }
