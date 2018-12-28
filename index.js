@@ -79,6 +79,6 @@ app.get('/events', (req, res) => {
   });
 });
 
-app.use('/app', express.static('app'));
+app.use('/app', express.static('app-old'));
 
 app.listen(PORT, () => console.log(`Listen on ${PORT}!`));
