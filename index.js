@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const transGPS = require('./trans-gps');
 const transportCV = require('./transport-cv');
 const EventStream = require('./event-stream');
@@ -6,6 +7,8 @@ const EventStream = require('./event-stream');
 const app = express();
 
 const PORT = process.env.PORT || 3001;
+
+app.use(cors());
 
 function fetchRoutes() {
   return transportCV
