@@ -1,0 +1,18 @@
+{
+  "name": "chernivtsi-transport",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "api",
+    "app"
+  ],
+  "scripts": {
+    "start": "lerna run start --stream",
+    "start:dev": "lerna run --stream start:dev",
+    "build": "lerna build --stream",
+    "format": "echo formatting..."
+  },
+  "devDependencies": {
+    "lerna": "^3.8.0"
+  }
+}
