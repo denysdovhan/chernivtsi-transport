@@ -1,0 +1,15 @@
+{
+  "name": "api",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "forever": "^0.15.3",
+    "isomorphic-fetch": "^2.2.1"
+  },
+  "scripts": {
+    "start": "forever index.js",
+    "start:dev": "forever --watch index.js"
+  }
+}
