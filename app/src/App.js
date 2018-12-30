@@ -1,61 +1,71 @@
 import React, { Component } from 'react';
 import L from 'leaflet';
+import * as RL from 'react-leaflet';
 import EventStreamClient from './sse-client';
 import renderSVG from './svg';
 
+const api = 'http://localhost:3001';
 const tileLayer = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
-class App extends Component {
-  mapEl = React.createRef();
+const root = {
+  position: [48.2916063, 25.9345009],
+  zoom: 13
+};
 
-  markers = new Map();
+class App extends Component {
+  state = {
+    markers: [],
+    routes: []
+  };
 
   componentDidMount() {
-    this.map = L.map(this.mapEl.current, {
-      center: [48.2916063, 25.9345009],
-      zoom: 13
-    });
+    fetch(`${api}/routes`)
+      .then(response => response.json())
+      .then(routes => this.setState({ routes }))
+      .catch(console.error);
 
-    L.tileLayer(tileLayer).addTo(this.map);
+    const stream = new EventStreamClient(`${api}/events`);
 
-    const stream = new EventStreamClient('http://localhost:3001/events');
-
-    stream.receive((data, event) => {
+    stream.receive((markers, event) => {
       console.log('receive data:', event);
-
-      data.forEach(tracker => {
-        if (this.markers.has(tracker.id)) {
-          return this.markers
-            .get(tracker.id)
-            .setLatLng([tracker.latitude, tracker.longitude])
-            .setIcon(
-              L.icon({
-                iconUrl: renderSVG({
-                  speed: tracker.speed,
-                  angle: tracker.direction
-                }),
-                iconAnchor: [55, 40]
-              })
-            );
-        }
-
-        const marker = L.marker([tracker.latitude, tracker.longitude], {
-          icon: L.icon({
-            iconUrl: renderSVG({
-              speed: tracker.speed,
-              angle: tracker.direction
-            }),
-            iconAnchor: [55, 40]
-          })
-        }).addTo(this.map);
-
-        this.markers.set(tracker.id, marker);
-      });
+      if (Array.isArray(markers)) {
+        this.setState({ markers });
+      }
     });
   }
 
   render() {
-    return <div ref={this.mapEl} style={{ height: '100%' }} />;
+    const { routes, markers } = this.state;
+
+    return (
+      <RL.Map center={root.position} zoom={13} style={{ height: '100%' }}>
+        <RL.TileLayer
+          attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          url={tileLayer}
+        />
+        {markers.map(marker => {
+          const route = routes.find(route => route.id === marker.routeId);
+
+          return (
+            <RL.Marker
+              key={marker.id}
+              position={[marker.latitude, marker.longitude]}
+              icon={L.icon({
+                iconUrl: renderSVG({
+                  speed: marker.speed,
+                  angle: marker.direction,
+                  text: route ? route.name : 'A',
+                  stroke: route ? route.color : 'gray'
+                }),
+                iconAnchor: [55, 40]
+              })}
+            >
+              <RL.Popup>{JSON.stringify(marker, null, 2)}</RL.Popup>
+            </RL.Marker>
+          );
+        })}
+      </RL.Map>
+    );
   }
 }
 
