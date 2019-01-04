@@ -1,5 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+.idea
+
 # dependencies
 /node_modules
 /.pnp
@@ -9,6 +11,11 @@ api/package-lock.json
 app/node_modules/
 app/package-lock.json
 package-lock.json
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> c191cfb799297e2656f58bbd22a2f0d0ac59883f
 
 # testing
 /coverage
