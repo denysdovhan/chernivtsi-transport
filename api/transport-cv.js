@@ -69,7 +69,7 @@ function toTracker({
     angle,
     speed,
     datetime,
-    routeId,
+    routeId: `${namespace}:${routeId}`,
     ...rest
   };
 }

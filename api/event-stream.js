@@ -23,7 +23,6 @@ class EventStream {
 
   emit(event, data) {
     const id = Date.now();
-    console.log({ id });
     this.response.write(`id: ${id}\n`);
     this.response.write(`event: ${event}\n`);
     this.response.write(`data: ${JSON.stringify(data)}\n\n`);

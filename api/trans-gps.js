@@ -77,7 +77,7 @@ function toTracker({
     direction: Number(orientation),
     speed: Number(speed),
     datetime: gpstime,
-    routeId,
+    routeId: `${namespace}:${routeId}`,
     ...rest
   };
 }
