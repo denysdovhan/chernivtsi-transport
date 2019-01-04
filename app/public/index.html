@@ -5,9 +5,72 @@
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover"
     />
     <meta name="theme-color" content="#000000" />
+    <!-- iOS PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <!-- iPhone ICON -->
+    <link
+      href="%PUBLIC_URL%/icons/apple-touch-icon-57x57.png"
+      sizes="57x57"
+      rel="apple-touch-icon"
+    />
+    <!-- iPad ICON-->
+    <link
+      href="%PUBLIC_URL%/icons/apple-touch-icon-72x72.png"
+      sizes="72x72"
+      rel="apple-touch-icon"
+    />
+    <!-- iPhone (Retina) ICON-->
+    <link
+      href="%PUBLIC_URL%/icons/apple-touch-icon-114x114.png"
+      sizes="114x114"
+      rel="apple-touch-icon"
+    />
+    <!-- iPad (Retina) ICON-->
+    <link
+      href="%PUBLIC_URL%/icons/apple-touch-icon-144x144.png"
+      sizes="144x144"
+      rel="apple-touch-icon"
+    />
+    <!-- SPLASH -->
+    <link
+      rel="apple-touch-startup-image"
+      href="%PUBLIC_URL%/icons/launch-640x1136.png"
+      media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="%PUBLIC_URL%/icons/launch-750x1294.png"
+      media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="%PUBLIC_URL%/icons/launch-1242x2148.png"
+      media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="%PUBLIC_URL%/icons/launch-1125x2436.png"
+      media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="%PUBLIC_URL%/icons/launch-1536x2048.png"
+      media="(min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="%PUBLIC_URL%/icons/launch-1668x2224.png"
+      media="(min-device-width: 834px) and (max-device-width: 834px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="%PUBLIC_URL%/icons/launch-2048x2732.png"
+      media="(min-device-width: 1024px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
     <!--
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -23,6 +86,11 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React App</title>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
