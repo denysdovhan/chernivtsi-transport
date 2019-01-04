@@ -15,8 +15,11 @@
     "app"
   ],
   "scripts": {
-    "start": "forever index.js",
-    "start:dev": "forever --watch index.js"
+    "start": "lerna run start --stream",
+    "start:dev": "lerna run --stream start:dev",
+    "build": "lerna build --stream",
+    "format": "echo formatting...",
+    "lint": "eslint **/*.js --ignore-pattern node_modules"
   },
   "devDependencies": {
     "lerna": "^3.8.0",
