@@ -10,8 +10,8 @@
     "start": "lerna run start --stream",
     "start:dev": "lerna run --stream start:dev",
     "build": "lerna build --stream",
-    "format": "echo formatting...",
-    "lint": "eslint **/*.js --ignore-pattern node_modules"
+    "format": "prettier **/*.js & echo formatting...",
+    "lint": "eslint **/*.js"
   },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1"
@@ -34,6 +34,7 @@
   },
   "lint-staged": {
     "*.js": [
+      "prettier",
       "eslint --fix",
       "git add"
     ]
