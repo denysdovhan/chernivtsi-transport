@@ -3,11 +3,12 @@ import L from 'leaflet';
 import * as RL from 'react-leaflet';
 import EventStreamClient from './sse-client';
 import renderSVG from './svg';
-import MapBoxGLLayer from './MapboxGL';
 
-const api = 'http://192.168.0.106:3001';
+const api = 'http://localhost:3001';
 const tileLayer =
-  'https://maps.tilehosting.com/c/3e872111-766b-403a-8b3e-82feeccc6995/styles/bright/style.json?key=Mu3jnev7PZ551DrAd6cY';
+  'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
+const attribution =
+  '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>';
 
 const root = {
   position: [48.2916063, 25.9345009],
@@ -43,15 +44,16 @@ class App extends Component {
       <RL.Map
         center={root.position}
         zoom={13}
+        maxZoom={20}
+        minZoom={12}
+        maxBounds={[
+          [48.37778737618847, 25.789501368999485],
+          [48.1783186753248, 26.095058619976047]
+        ]}
         zoomControl={false}
         style={{ height: '100%' }}
-        onViewportChange={console.log}
       >
-        <MapBoxGLLayer
-          attribution={`<a href="https://www.maptiler.com/license/maps/" target="_blank">© MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>`}
-          accessToken="not-needed"
-          style={tileLayer}
-        />
+        <RL.TileLayer url={tileLayer} attribution={attribution} />
         {markers.map(marker => {
           const route = routes.find(route => route.id === marker.routeId);
 
