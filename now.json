@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "name": "chernivtsi-transport",
+  "builds": [{ "src": "api/index.js", "use": "@now/node-server" }],
+  "routes": [{ "src": "/api/(.*)", "dest": "/api" }]
+}
