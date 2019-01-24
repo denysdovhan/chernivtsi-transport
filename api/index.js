@@ -10,9 +10,9 @@ const PORT = process.env.PORT || 3001;
 
 const dataLayer = new DataLayer();
 
-app.use(cors());
+const api = new express.Router();
 
-app.get('/routes', async (req, res) => {
+api.get('/routes', async (req, res) => {
   try {
     const routes = await dataLayer.fetchRoutes();
     res.json(routes);
@@ -22,7 +22,7 @@ app.get('/routes', async (req, res) => {
   }
 });
 
-app.get('/trackers', async (req, res) => {
+api.get('/trackers', async (req, res) => {
   try {
     const trackers = await dataLayer.fetchTrackers();
     res.json(trackers);
@@ -32,7 +32,7 @@ app.get('/trackers', async (req, res) => {
   }
 });
 
-app.get('/events', (req, res) => {
+api.get('/events', (req, res) => {
   const stream = new EventStream(res);
 
   stream.open();
@@ -45,5 +45,9 @@ app.get('/events', (req, res) => {
   req.on('finish', () => dataLayer.unsubscribe(sendTrackers));
   req.on('close', () => dataLayer.unsubscribe(sendTrackers));
 });
+
+app.use(cors());
+
+app.use('/api', api);
 
 app.listen(PORT, () => console.log(`Listen on ${PORT}!`));
