@@ -50,4 +50,14 @@ app.use(cors());
 
 app.use('/api', api);
 
+app.get('*', (req, res) => {
+  const { host } = req.headers;
+
+  res.json({
+    routes: `http://${host}/api/routes`,
+    trackers: `http://${host}/api/trackers`,
+    events: `http://${host}/api/events`
+  });
+});
+
 app.listen(PORT, () => console.log(`Listen on ${PORT}!`));
