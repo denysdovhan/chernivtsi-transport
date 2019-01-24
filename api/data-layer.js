@@ -77,7 +77,7 @@ class DataLayer extends EventEmmiter {
     console.log(`${this.listenerCount('trackers')} subscribers...`);
   }
 
-  unsubcribe(callback) {
+  unsubscribe(callback) {
     if (this.listenerCount('trackers') === 1) {
       // If the last listener is unsubscribing, then stop the interval
       clearInterval(this.updateTrackersInterval);

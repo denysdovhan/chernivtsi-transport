@@ -42,8 +42,8 @@ app.get('/events', (req, res) => {
 
   dataLayer.subscribe(sendTrackers);
 
-  req.on('finish', () => dataLayer.unsubcribe(sendTrackers));
-  req.on('close', () => dataLayer.unsubcribe(sendTrackers));
+  req.on('finish', () => dataLayer.unsubscribe(sendTrackers));
+  req.on('close', () => dataLayer.unsubscribe(sendTrackers));
 });
 
 app.listen(PORT, () => console.log(`Listen on ${PORT}!`));
