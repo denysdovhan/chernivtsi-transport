@@ -3,8 +3,8 @@ import L from 'leaflet';
 import * as RL from 'react-leaflet';
 import EventStreamClient from './sse-client';
 import renderSVG from './svg';
+import { API_URI } from './config';
 
-const api = 'http://localhost:3001';
 const tileLayer =
   'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
 const attribution =
@@ -22,12 +22,12 @@ class App extends Component {
   };
 
   componentDidMount() {
-    fetch(`${api}/routes`)
+    fetch(`${API_URI}/routes`)
       .then(response => response.json())
       .then(routes => this.setState({ routes }))
       .catch(console.error);
 
-    const stream = new EventStreamClient(`${api}/events`);
+    const stream = new EventStreamClient(`${API_URI}/events`);
 
     stream.receive((markers, event) => {
       console.log('receive data:', markers);
@@ -39,6 +39,8 @@ class App extends Component {
 
   render() {
     const { routes, markers } = this.state;
+
+    console.log(process.env);
 
     return (
       <RL.Map
