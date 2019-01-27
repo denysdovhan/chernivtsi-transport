@@ -1,0 +1,16 @@
+sudo: true
+language: node_js
+node_js: node
+jobs:
+  include:
+    - stage: deploy
+      if: branch = master AND type = push
+      script:
+        - yarn build
+      deploy:
+        provider: pages
+        skip-cleanup: true
+        github-token: $GITHUB_TOKEN
+        committer-from-gh: true
+        keep-history: true
+        local-dir: app/build
