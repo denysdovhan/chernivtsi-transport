@@ -18,5 +18,9 @@
   },
   "dependencies": {
     "lerna": "^3.8.0"
-  }
+  },
+  "cacheDirectories": [
+    "api/node_modules",
+    "app/node_modules"
+  ]
 }
