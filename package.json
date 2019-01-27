@@ -8,7 +8,11 @@
   ],
   "scripts": {
     "start": "lerna run start --stream",
+    "start:api": "lerna run start --scope api",
+    "start:app": "lerna run start --scope app",
     "start:dev": "lerna run --stream start:dev",
+    "start:api:dev": "lerna run --scope api start:dev",
+    "start:app:dev": "lerna run --scope app start:dev",
     "build": "lerna build --stream",
     "format": "echo formatting..."
   },
