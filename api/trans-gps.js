@@ -7,7 +7,7 @@ const namespace = 'trans-gps';
 const baseUrl = 'http://www.trans-gps.cv.ua/map';
 
 const api = {
-  routes: `${baseUrl}/routes`,
+  routes: [`${baseUrl}/routes/1`, `${baseUrl}/routes/2`],
   trackers: `${baseUrl}/trackers/?selectedRoutesStr=`
 };
 
@@ -83,13 +83,19 @@ function toTracker({
 }
 
 function fetchRoutes() {
-  return fetch(api.routes, {
-    headers: {
-      Connection: 'keep-alive'
-    }
-  })
-    .then(response => response.json())
-    .then(json => Object.entries(json))
+  const promises = api.routes.map(path =>
+    fetch(path, {
+      headers: {
+        Connection: 'keep-alive'
+      }
+    })
+  );
+
+  return Promise.all(promises)
+    .then(([response1, response2]) =>
+      Promise.all([response1.json(), response2.json()])
+    )
+    .then(([json1, json2]) => Object.entries({ ...json1, ...json2 }))
     .then(entries => entries.map(([key, route]) => toRoute(route)));
 }
 
