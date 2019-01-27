@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "4ea19472ab870f27992d",
+    "revision": "e4482535062f80fe5ff8",
     "url": "/chernivtsi-transport/static/css/main.56e0b69f.chunk.css"
   },
   {
-    "revision": "4ea19472ab870f27992d",
-    "url": "/chernivtsi-transport/static/js/main.4ea19472.chunk.js"
+    "revision": "e4482535062f80fe5ff8",
+    "url": "/chernivtsi-transport/static/js/main.e4482535.chunk.js"
   },
   {
     "revision": "1693bcafdf94f4aaf2b1",
@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/chernivtsi-transport/static/js/runtime~main.ee850b7e.js"
   },
   {
-    "revision": "76e3e7538d8076746fe3d4c688331e86",
+    "revision": "a972656cb68f26426a5d09d3a8dc98f6",
     "url": "/chernivtsi-transport/index.html"
   }
 ];
