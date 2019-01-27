@@ -1,7 +1,7 @@
 {
   "main.css": "/chernivtsi-transport/static/css/main.56e0b69f.chunk.css",
-  "main.js": "/chernivtsi-transport/static/js/main.43a030ec.chunk.js",
-  "main.js.map": "/chernivtsi-transport/static/js/main.43a030ec.chunk.js.map",
+  "main.js": "/chernivtsi-transport/static/js/main.4ea19472.chunk.js",
+  "main.js.map": "/chernivtsi-transport/static/js/main.4ea19472.chunk.js.map",
   "static/css/1.a18c319c.chunk.css": "/chernivtsi-transport/static/css/1.a18c319c.chunk.css",
   "static/js/1.1693bcaf.chunk.js": "/chernivtsi-transport/static/js/1.1693bcaf.chunk.js",
   "static/js/1.1693bcaf.chunk.js.map": "/chernivtsi-transport/static/js/1.1693bcaf.chunk.js.map",
@@ -10,6 +10,6 @@
   "static/css/main.56e0b69f.chunk.css.map": "/chernivtsi-transport/static/css/main.56e0b69f.chunk.css.map",
   "static/css/1.a18c319c.chunk.css.map": "/chernivtsi-transport/static/css/1.a18c319c.chunk.css.map",
   "index.html": "/chernivtsi-transport/index.html",
-  "precache-manifest.01043a8d2a418316a6d7ee53a3b5b5ed.js": "/chernivtsi-transport/precache-manifest.01043a8d2a418316a6d7ee53a3b5b5ed.js",
+  "precache-manifest.4ad44b8a3d2713fc8cf9044be9aa2a32.js": "/chernivtsi-transport/precache-manifest.4ad44b8a3d2713fc8cf9044be9aa2a32.js",
   "service-worker.js": "/chernivtsi-transport/service-worker.js"
 }
