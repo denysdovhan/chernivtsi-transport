@@ -16,7 +16,7 @@
     "build": "lerna build --stream",
     "format": "echo formatting..."
   },
-  "devDependencies": {
+  "dependencies": {
     "lerna": "^3.8.0"
   }
 }
