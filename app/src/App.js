@@ -25,12 +25,11 @@ class App extends Component {
     fetch(`${API_URI}/routes`)
       .then(response => response.json())
       .then(routes => this.setState({ routes }))
-      .catch(console.error);
+      .catch(console.error); // eslint-disable-line
 
     const stream = new EventStreamClient(`${API_URI}/events`);
 
     stream.receive(markers => {
-      console.log('receive data:', markers);
       if (Array.isArray(markers)) {
         this.setState({ markers });
       }
@@ -39,8 +38,6 @@ class App extends Component {
 
   render() {
     const { routes, markers } = this.state;
-
-    console.log(process.env);
 
     return (
       <RL.Map

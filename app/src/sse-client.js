@@ -10,8 +10,8 @@ class EventStreamClient {
   constructor(endpoint) {
     this.endpoint = endpoint;
     this.source = new EventSource(endpoint);
-    this.source.onopen = event => console.log('open', event);
-    this.source.onerror = event => console.log('error', event);
+    this.source.onopen = event => console.log('open', event); // eslint-disable-line
+    this.source.onerror = event => console.log('error', event); // eslint-disable-line
   }
 
   on(event, callback) {
