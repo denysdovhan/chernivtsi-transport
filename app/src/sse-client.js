@@ -15,8 +15,8 @@ class EventStreamClient {
   }
 
   on(event, callback) {
-    this.source.addEventListener(event, event =>
-      callback(safeJSONParse(event.data), event)
+    this.source.addEventListener(event, nativeEvent =>
+      callback(safeJSONParse(nativeEvent.data), nativeEvent)
     );
     return this;
   }

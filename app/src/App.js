@@ -29,7 +29,7 @@ class App extends Component {
 
     const stream = new EventStreamClient(`${API_URI}/events`);
 
-    stream.receive((markers, event) => {
+    stream.receive(markers => {
       console.log('receive data:', markers);
       if (Array.isArray(markers)) {
         this.setState({ markers });
@@ -57,7 +57,9 @@ class App extends Component {
       >
         <RL.TileLayer url={tileLayer} attribution={attribution} />
         {markers.map(marker => {
-          const route = routes.find(route => route.id === marker.routeId);
+          const routeForMarker = routes.find(
+            route => route.id === marker.routeId
+          );
 
           return (
             <RL.Marker
@@ -67,8 +69,8 @@ class App extends Component {
                 iconUrl: renderSVG({
                   speed: marker.speed,
                   angle: marker.direction,
-                  text: route ? route.name : 'A',
-                  stroke: route ? route.color : 'gray'
+                  text: routeForMarker ? routeForMarker.name : 'A',
+                  stroke: routeForMarker ? routeForMarker.color : 'gray'
                 }),
                 iconAnchor: [13, 19]
               })}

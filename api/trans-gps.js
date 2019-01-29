@@ -96,7 +96,7 @@ function fetchRoutes() {
       Promise.all([response1.json(), response2.json()])
     )
     .then(([json1, json2]) => Object.entries({ ...json1, ...json2 }))
-    .then(entries => entries.map(([key, route]) => toRoute(route)));
+    .then(entries => entries.map(([, route]) => toRoute(route)));
 }
 
 function fetchTrackers() {
@@ -107,7 +107,7 @@ function fetchTrackers() {
   })
     .then(res => res.json())
     .then(json => Object.entries(json))
-    .then(entries => entries.map(([key, tracker]) => toTracker(tracker)));
+    .then(entries => entries.map(([, tracker]) => toTracker(tracker)));
 }
 
 module.exports = {

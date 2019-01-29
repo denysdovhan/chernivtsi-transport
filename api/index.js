@@ -18,7 +18,7 @@ api.get('/routes', async (req, res) => {
     res.json(routes);
   } catch (error) {
     console.log(error);
-    res.end(err.toString());
+    res.end(error.toString());
   }
 });
 
@@ -28,7 +28,7 @@ api.get('/trackers', async (req, res) => {
     res.json(trackers);
   } catch (error) {
     console.log(error);
-    res.end(err.toString());
+    res.end(error.toString());
   }
 });
 
