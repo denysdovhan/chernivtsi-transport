@@ -1,6 +1,4 @@
-# Chernivtsi Transport Map
-
-[![Build Status][travis-image]][travis-url]
+# Chernivtsi Transport Map [![Build Status][travis-image]][travis-url]
 
 ## Deployment
 
@@ -10,4 +8,4 @@ Frontend is deployed on GitHub Pages.
 <!-- References -->
 
 [travis-url]: https://travis-ci.org/denysdovhan/chernivtsi-transport
-[travis-image]: https://img.shields.io/travis/denysdovhan/chernivtsi-transport.svg?style=flat-square
+[travis-image]: https://img.shields.io/travis/com/denysdovhan/chernivtsi-transport.svg?style=flat-square
