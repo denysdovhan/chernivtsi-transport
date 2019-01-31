@@ -25,12 +25,11 @@ class App extends Component {
     fetch(`${API_URI}/routes`)
       .then(response => response.json())
       .then(routes => this.setState({ routes }))
-      .catch(console.error);
+      .catch(console.error); // eslint-disable-line
 
     const stream = new EventStreamClient(`${API_URI}/events`);
 
-    stream.receive((markers, event) => {
-      console.log('receive data:', markers);
+    stream.receive(markers => {
       if (Array.isArray(markers)) {
         this.setState({ markers });
       }
@@ -39,8 +38,6 @@ class App extends Component {
 
   render() {
     const { routes, markers } = this.state;
-
-    console.log(process.env);
 
     return (
       <RL.Map
@@ -57,7 +54,9 @@ class App extends Component {
       >
         <RL.TileLayer url={tileLayer} attribution={attribution} />
         {markers.map(marker => {
-          const route = routes.find(route => route.id === marker.routeId);
+          const routeForMarker = routes.find(
+            route => route.id === marker.routeId
+          );
 
           return (
             <RL.Marker
@@ -67,8 +66,8 @@ class App extends Component {
                 iconUrl: renderSVG({
                   speed: marker.speed,
                   angle: marker.direction,
-                  text: route ? route.name : 'A',
-                  stroke: route ? route.color : 'gray'
+                  text: routeForMarker ? routeForMarker.name : 'A',
+                  stroke: routeForMarker ? routeForMarker.color : 'gray'
                 }),
                 iconAnchor: [13, 19]
               })}

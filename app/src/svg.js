@@ -1,4 +1,4 @@
-export default function svg({
+export default function renderSVG({
   speed,
   stroke = '#7D5C65',
   fill = 'white',
