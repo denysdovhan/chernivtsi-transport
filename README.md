@@ -9,5 +9,5 @@ Frontend is deployed on GitHub Pages.
 
 <!-- References -->
 
-[travis-url]: https://travis-ci.org/denysdovhan/chernivtsi-transport
+[travis-url]: https://travis-ci.com/denysdovhan/chernivtsi-transport
 [travis-image]: https://img.shields.io/travis/denysdovhan/chernivtsi-transport.svg?style=flat-square
