@@ -10,6 +10,7 @@
   },
   "scripts": {
     "start": "forever index.js",
-    "start:dev": "forever --watch index.js"
+    "start:dev": "forever --watch index.js",
+    "build": "tsc -p ."
   }
 }
