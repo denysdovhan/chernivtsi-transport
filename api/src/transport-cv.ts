@@ -84,7 +84,7 @@ export function fetchToken(): Promise<string> {
       const match = url.match(/jsessionid=([A-Z0-9]+)/i);
 
       if (match && match.length > 0) {
-        return match[0];
+        return match[1];
       }
 
       throw new Error('Cannot get token for transport.cv.ua!');

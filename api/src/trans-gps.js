@@ -8,7 +8,7 @@ const baseUrl = 'http://www.trans-gps.cv.ua/map';
 
 const api = {
   routes: [`${baseUrl}/routes/1`, `${baseUrl}/routes/2`],
-  trackers: `${baseUrl}/trackers/?selectedRoutesStr=`
+  trackers: `${baseUrl}/tracker/?selectedRoutesStr=`
 };
 
 // Transform trans-gps route object to unified format

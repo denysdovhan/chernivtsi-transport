@@ -60,4 +60,4 @@ app.get('*', (req, res) => {
   });
 });
 
-app.listen(PORT, () => console.log(`Listen on ${PORT}!`));
+app.listen(PORT, () => console.log(`Listening on https://localhost:${PORT}`));
