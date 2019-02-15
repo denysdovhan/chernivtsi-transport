@@ -10,10 +10,11 @@
   },
   "scripts": {
     "start": "forever build/index.js",
-    "start:dev": "forever --watch -m 1 --c 'node --inspect -r ts-node/register' src/index.js",
+    "start:dev": "forever --watch -m 1 --c 'node --inspect -r ts-node/register' src/index.ts",
     "build": "tsc -p ."
   },
   "devDependencies": {
+    "@types/cors": "^2.8.4",
     "@types/express": "^4.16.1",
     "@types/node-fetch": "^2.1.6",
     "ts-node": "^8.0.2"

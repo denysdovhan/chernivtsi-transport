@@ -6,7 +6,7 @@ import { Response } from 'express';
 // * Auto JSON-stringify
 // * Auto reconnect
 interface EventStreamOptions {
-  delay: number;
+  delay?: number;
 }
 
 export default class EventStream {
@@ -17,8 +17,12 @@ export default class EventStream {
 
   private response: Response;
 
-  public open(options: EventStreamOptions): EventStream {
-    const { delay = 10000 } = options;
+  private defaultOptions: EventStreamOptions = {
+    delay: 1000
+  };
+
+  public open(options?: EventStreamOptions): EventStream {
+    const { delay } = { ...this.defaultOptions, ...options };
     this.response.set({
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
