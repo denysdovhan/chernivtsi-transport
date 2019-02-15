@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "forever build/index.js",
-    "start:dev": "forever --watch --c ts-node src/index.js",
+    "start:dev": "forever --watch --c 'node --inspect -r ts-node/register' src/index.js",
     "build": "tsc -p ."
   },
   "devDependencies": {
