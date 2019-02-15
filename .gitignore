@@ -9,6 +9,7 @@ node_modules
 app/coverage
 
 # production
+api/build
 app/build
 
 # misc
