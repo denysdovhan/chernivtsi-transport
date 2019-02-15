@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const DataLayer = require('./data-layer');
+const DataLayer = require('./data-layer').default;
 
 const EventStream = require('./event-stream');
 
