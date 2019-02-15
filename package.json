@@ -14,8 +14,7 @@
     "start:api:dev": "lerna run --scope api start:dev",
     "start:app:dev": "lerna run --scope app start:dev",
     "build": "lerna run build --stream",
-    "format": "prettier --write",
-    "lint": "eslint \"**/*.js\""
+    "lint": "eslint \"**/*.{js,ts,tsx}\""
   },
   "dependencies": {
     "lerna": "^3.8.0"
@@ -44,12 +43,12 @@
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
-      "npm run lint",
-      "npm run format",
+      "prettier --write",
+      "eslint --fix",
       "git add"
     ],
-    "**/*.{json,css,scss,md}": [
-      "npm run format",
+    "**/*.{json,css,md}": [
+      "prettier --write",
       "git add"
     ]
   }
