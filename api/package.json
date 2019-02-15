@@ -9,11 +9,12 @@
     "node-fetch": "^2.3.0"
   },
   "scripts": {
-    "start": "forever index.js",
-    "start:dev": "forever --watch index.js",
+    "start": "forever build/index.js",
+    "start:dev": "forever --watch --c ts-node src/index.js",
     "build": "tsc -p ."
   },
   "devDependencies": {
-    "@types/node-fetch": "^2.1.6"
+    "@types/node-fetch": "^2.1.6",
+    "ts-node": "^8.0.2"
   }
 }
