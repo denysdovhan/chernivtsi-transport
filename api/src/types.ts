@@ -2,7 +2,7 @@ export interface Route {
   id: string;
   name: string;
   color: string;
-  description: string;
+  description?: string;
 }
 
 export interface Tracker {
