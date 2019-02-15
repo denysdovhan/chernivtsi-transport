@@ -6,11 +6,14 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "forever": "^0.15.3",
-    "isomorphic-fetch": "^2.2.1"
+    "node-fetch": "^2.3.0"
   },
   "scripts": {
     "start": "forever index.js",
     "start:dev": "forever --watch index.js",
     "build": "tsc -p ."
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.1.6"
   }
 }
