@@ -1,15 +1,15 @@
 {
-  "main.css": "/chernivtsi-transport/static/css/main.8497096b.chunk.css",
-  "main.js": "/chernivtsi-transport/static/js/main.436c83a3.chunk.js",
-  "main.js.map": "/chernivtsi-transport/static/js/main.436c83a3.chunk.js.map",
-  "static/css/1.d1da8a7e.chunk.css": "/chernivtsi-transport/static/css/1.d1da8a7e.chunk.css",
-  "static/js/1.f49e7fb3.chunk.js": "/chernivtsi-transport/static/js/1.f49e7fb3.chunk.js",
-  "static/js/1.f49e7fb3.chunk.js.map": "/chernivtsi-transport/static/js/1.f49e7fb3.chunk.js.map",
-  "runtime~main.js": "/chernivtsi-transport/static/js/runtime~main.ee850b7e.js",
-  "runtime~main.js.map": "/chernivtsi-transport/static/js/runtime~main.ee850b7e.js.map",
-  "static/css/main.8497096b.chunk.css.map": "/chernivtsi-transport/static/css/main.8497096b.chunk.css.map",
-  "static/css/1.d1da8a7e.chunk.css.map": "/chernivtsi-transport/static/css/1.d1da8a7e.chunk.css.map",
+  "main.css": "/chernivtsi-transport/static/css/main.39d26c1f.chunk.css",
+  "main.js": "/chernivtsi-transport/static/js/main.bcbd9453.chunk.js",
+  "main.js.map": "/chernivtsi-transport/static/js/main.bcbd9453.chunk.js.map",
+  "runtime~main.js": "/chernivtsi-transport/static/js/runtime~main.e109cb45.js",
+  "runtime~main.js.map": "/chernivtsi-transport/static/js/runtime~main.e109cb45.js.map",
+  "static/css/2.9d31ebd0.chunk.css": "/chernivtsi-transport/static/css/2.9d31ebd0.chunk.css",
+  "static/js/2.cf1b93e3.chunk.js": "/chernivtsi-transport/static/js/2.cf1b93e3.chunk.js",
+  "static/js/2.cf1b93e3.chunk.js.map": "/chernivtsi-transport/static/js/2.cf1b93e3.chunk.js.map",
   "index.html": "/chernivtsi-transport/index.html",
-  "precache-manifest.2c3fe99c626b879474a4747a4423bd90.js": "/chernivtsi-transport/precache-manifest.2c3fe99c626b879474a4747a4423bd90.js",
-  "service-worker.js": "/chernivtsi-transport/service-worker.js"
+  "precache-manifest.63a0ac87ffe13c91b17d3f4b3ba1ffc1.js": "/chernivtsi-transport/precache-manifest.63a0ac87ffe13c91b17d3f4b3ba1ffc1.js",
+  "service-worker.js": "/chernivtsi-transport/service-worker.js",
+  "static/css/2.9d31ebd0.chunk.css.map": "/chernivtsi-transport/static/css/2.9d31ebd0.chunk.css.map",
+  "static/css/main.39d26c1f.chunk.css.map": "/chernivtsi-transport/static/css/main.39d26c1f.chunk.css.map"
 }
