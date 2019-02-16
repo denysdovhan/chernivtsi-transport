@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/chernivtsi-transport/static/js/2.cf1b93e3.chunk.js"
   },
   {
-    "revision": "12ffd8d3b8189d7d7ceba639c4484de7",
+    "revision": "e25c3d98ae624051083a7deac51e3ab0",
     "url": "/chernivtsi-transport/index.html"
   }
 ];
