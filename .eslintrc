@@ -1,6 +1,10 @@
 {
-  "extends": ["airbnb", "plugin:prettier/recommended"],
-  "parser": "babel-eslint",
+  "extends": [
+    "airbnb",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
   "env": {
     "node": true,
     "browser": true
@@ -8,11 +12,14 @@
   "settings": {
     "import/resolver": {
       "node": {
-        "paths": ["."]
+        "paths": ["."],
+        "extensions": [".js", ".ts", ".tsx"]
       }
     }
   },
   "rules": {
+    "@typescript-eslint/indent": "off",
+    "@typescript-eslint/no-var-requires": "off",
     "react/jsx-filename-extension": "off"
   }
 }

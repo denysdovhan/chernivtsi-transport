@@ -2,14 +2,21 @@
   "name": "api",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "forever build/index.js",
+    "start:dev": "forever --watch -m 1 --c 'node --inspect -r ts-node/register' src/index.ts",
+    "build": "tsc -p ."
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "forever": "^0.15.3",
-    "isomorphic-fetch": "^2.2.1"
+    "node-fetch": "^2.3.0"
   },
-  "scripts": {
-    "start": "forever index.js",
-    "start:dev": "forever --watch index.js"
+  "devDependencies": {
+    "@types/cors": "^2.8.4",
+    "@types/express": "^4.16.1",
+    "@types/node-fetch": "^2.1.6",
+    "ts-node": "^8.0.2"
   }
 }

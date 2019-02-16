@@ -1,16 +1,28 @@
+import { Response } from 'express';
+
 // Features:
 // * High-level API
 // * Chainable aAPI
 // * Auto JSON-stringify
 // * Auto reconnect
-class EventStream {
-  // TODO: Create server or use a new one
-  constructor(response) {
+interface EventStreamOptions {
+  delay?: number;
+}
+
+export default class EventStream {
+  public constructor(response: Response) {
+    // TODO: Create server or use a new one
     this.response = response;
   }
 
-  open(options = {}) {
-    const { delay = 10000 } = options;
+  private response: Response;
+
+  private defaultOptions: EventStreamOptions = {
+    delay: 1000
+  };
+
+  public open(options?: EventStreamOptions): EventStream {
+    const { delay } = { ...this.defaultOptions, ...options };
     this.response.set({
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
@@ -21,7 +33,7 @@ class EventStream {
     return this;
   }
 
-  emit(event, data) {
+  public emit<Data>(event: string, data: Data): EventStream {
     const id = Date.now();
     this.response.write(`id: ${id}\n`);
     this.response.write(`event: ${event}\n`);
@@ -29,15 +41,13 @@ class EventStream {
     return this;
   }
 
-  send(data) {
+  public send<Data>(data: Data): EventStream {
     this.emit('message', data);
     return this;
   }
 
-  close(code = 503) {
+  public close(code: number = 503): EventStream {
     this.response.status(code);
     return this;
   }
 }
-
-module.exports = EventStream;
