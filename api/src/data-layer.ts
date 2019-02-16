@@ -1,20 +1,30 @@
-const EventEmmiter = require('events');
-const transGPS = require('./trans-gps');
-const transportCV = require('./transport-cv');
+import EventEmmiter from 'events';
+import * as TransGPS from './trans-gps';
+import * as TransportCV from './transport-cv';
+import { Tracker, Route } from './types';
 
-class DataLayer extends EventEmmiter {
-  constructor() {
+type Token = string | null;
+type Callback = (...args: any) => any;
+
+export default class DataLayer extends EventEmmiter {
+  public constructor() {
     super();
     this.token = null;
     this.trackers = [];
-    this.updateTrackersInterval = null;
+    this.updateTrackersIntervalId = null;
 
     this.fetchToken();
   }
 
-  async fetchToken() {
+  private token: Token;
+
+  private trackers: Tracker[];
+
+  private updateTrackersIntervalId: NodeJS.Timeout | null;
+
+  private async fetchToken(): Promise<Token> {
     try {
-      this.token = await transportCV.fetchToken();
+      this.token = await TransportCV.fetchToken();
       return this.token;
     } catch (error) {
       this.token = null;
@@ -22,11 +32,11 @@ class DataLayer extends EventEmmiter {
     }
   }
 
-  async fetchRoutes() {
+  public async fetchRoutes(): Promise<Route[]> {
     try {
       const [transGPSRoutes, transportCVRoutes] = await Promise.all([
-        transGPS.fetchRoutes(),
-        transportCV.fetchRoutes(this.token)
+        TransGPS.fetchRoutes(),
+        TransportCV.fetchRoutes(this.token as string)
       ]);
 
       return [...transGPSRoutes, ...transportCVRoutes];
@@ -37,11 +47,11 @@ class DataLayer extends EventEmmiter {
     }
   }
 
-  async fetchTrackers() {
+  public async fetchTrackers(): Promise<Tracker[]> {
     try {
       const [transGPSTrackers, transportCVTrackers] = await Promise.all([
-        transGPS.fetchTrackers(),
-        transportCV.fetchTrackers(this.token)
+        TransGPS.fetchTrackers(),
+        TransportCV.fetchTrackers(this.token as string)
       ]);
 
       return [...transGPSTrackers, ...transportCVTrackers];
@@ -52,7 +62,7 @@ class DataLayer extends EventEmmiter {
     }
   }
 
-  async updateTrackers() {
+  private async updateTrackers(): Promise<void> {
     try {
       this.trackers = await this.fetchTrackers();
       this.emit('trackers', this.trackers);
@@ -61,30 +71,29 @@ class DataLayer extends EventEmmiter {
     }
   }
 
-  subscribe(callback) {
+  public subscribe(callback: Callback): void {
     if (this.listenerCount('trackers') === 0) {
       // If this is the first listener, then update trackers immediately
       this.updateTrackers();
       // And start the interval for updates
-      this.updateTrackersInterval = setInterval(
+      this.updateTrackersIntervalId = setInterval(
         () => this.updateTrackers(),
         5000
       );
     }
+
     // Send data from cache immediately
     callback(this.trackers);
     this.on('trackers', callback);
     console.log(`${this.listenerCount('trackers')} subscribers...`);
   }
 
-  unsubscribe(callback) {
-    if (this.listenerCount('trackers') === 1) {
+  public unsubscribe(callback: Callback): void {
+    if (this.listenerCount('trackers') === 1 && this.updateTrackersIntervalId) {
       // If the last listener is unsubscribing, then stop the interval
-      clearInterval(this.updateTrackersInterval);
+      clearInterval(this.updateTrackersIntervalId);
     }
     this.off('trackers', callback);
     console.log(`${this.listenerCount('trackers')} subscribers...`);
   }
 }
-
-module.exports = DataLayer;
