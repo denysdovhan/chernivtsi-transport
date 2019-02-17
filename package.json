@@ -54,5 +54,6 @@
       "prettier --write",
       "git add"
     ]
-  }
+  },
+  "heroku-run-build-script": true
 }
