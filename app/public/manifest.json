@@ -28,7 +28,7 @@
       "type": "image/x-icon"
     }
   ],
-  "start_url": "/?utm_source=homescreen",
+  "start_url": "./?utm_source=homescreen",
   "display": "standalone",
   "theme_color": "#7D5C65",
   "background_color": "#ffffff"
