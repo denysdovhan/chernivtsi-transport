@@ -112,7 +112,6 @@ class App extends React.Component {
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition(
         position => {
-          console.log(position);
           this.setState(({ userPosition }) => {
             if (!userPosition) {
               return {
