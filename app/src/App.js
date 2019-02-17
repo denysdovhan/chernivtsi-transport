@@ -39,9 +39,10 @@ const TopBar = styled.div`
 
 const BottomBar = styled.div`
   position: fixed;
-  height: 250px;
   z-index: 8888;
-  overflow-y: scroll;
+  bottom: 0;
+  left: 0;
+  right: 0;
 `;
 
 const Card = styled.div`
@@ -69,6 +70,10 @@ const UserMaker = ({ position, accuracy = 7 }) => (
 
 class App extends React.Component {
   state = {
+    viewport: {
+      center: [48.2916063, 25.9345009],
+      zoom: 13
+    },
     currentMarkerId: null,
     markers: {
       isLoading: true,
@@ -82,13 +87,13 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    this.fetchRoutes();
-    this.setupClient();
-    this.watchPosition();
+    this.fetchRoutes()
+      .then(this.setupClient)
+      .then(this.watchPosition);
   }
 
   fetchRoutes = () => {
-    fetch(`${API_URI}/routes`)
+    return fetch(`${API_URI}/routes`)
       .then(response => response.json())
       .then(data => this.setState({ routes: { isLoading: false, data } }))
       .catch(console.error); // eslint-disable-line
@@ -107,23 +112,57 @@ class App extends React.Component {
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition(
         position => {
-          this.setState({
-            userPosition: {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-              accuracy: position.coords.accuracy
+          console.log(position);
+          this.setState(({ userPosition }) => {
+            if (!userPosition) {
+              return {
+                viewport: {
+                  center: [position.coords.latitude, position.coords.longitude],
+                  zoom: 16
+                },
+                userPosition: {
+                  latitude: position.coords.latitude,
+                  longitude: position.coords.longitude,
+                  accuracy: position.coords.accuracy
+                }
+              };
             }
+
+            return {
+              userPosition: {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+                accuracy: position.coords.accuracy
+              }
+            };
           });
         },
+        // eslint-disable-next-line
         error => console.error(error)
       );
     } else {
-      alert('no geo');
+      // eslint-disable-next-line
+      // Show error about missing geolocation
     }
   };
 
+  jumpToUserPosition = () => {
+    this.setState(({ userPosition }) => ({
+      viewport: {
+        center: [userPosition.latitude, userPosition.longitude],
+        zoom: 16
+      }
+    }));
+  };
+
   render() {
-    const { routes, markers, currentMarkerId, userPosition } = this.state;
+    const {
+      routes,
+      markers,
+      viewport,
+      currentMarkerId,
+      userPosition
+    } = this.state;
 
     if (routes.isLoading || markers.isLoading) {
       return <LoadingScreen />;
@@ -131,22 +170,21 @@ class App extends React.Component {
 
     return (
       <>
-        <TopBar>
-          <Card>Пошук за маршрутом</Card>
-        </TopBar>
+        <TopBar />
         <RL.Map
           center={root.position}
           zoom={13}
-          // maxZoom={20}
-          // minZoom={12}
-          // maxBounds={[
-          //   [48.37778737618847, 25.789501368999485],
-          //   [48.1783186753248, 26.095058619976047]
-          // ]}
+          maxZoom={20}
+          minZoom={12}
+          maxBounds={[
+            [48.37778737618847, 25.789501368999485],
+            [48.1783186753248, 26.095058619976047]
+          ]}
           zoomControl={false}
           style={{ height: '100%' }}
           onClick={() => this.setState({ currentMarkerId: null })}
-          onViewportChanged={console.log}
+          viewport={viewport}
+          onViewportChanged={console.log} // eslint-disable-line
         >
           <RL.TileLayer url={tileLayer} attribution={attribution} />
           {markers.data.map(marker => {
@@ -161,8 +199,8 @@ class App extends React.Component {
                 icon={L.icon({
                   iconUrl: renderSVG({
                     speed: marker.speed,
-                    angle: marker.direction,
-                    text: routeForMarker ? routeForMarker.name : 'A',
+                    angle: marker.angle,
+                    text: routeForMarker ? routeForMarker.name : 'Невідомий',
                     stroke: routeForMarker ? routeForMarker.color : 'gray'
                   }),
                   iconAnchor: [13, 19]
@@ -181,7 +219,6 @@ class App extends React.Component {
         <BottomBar>
           {currentMarkerId && (
             <Card>
-              <h3>Card 1</h3>
               {JSON.stringify(
                 markers.data.find(marker => marker.id === currentMarkerId),
                 null,
