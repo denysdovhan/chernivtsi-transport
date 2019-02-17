@@ -2,7 +2,7 @@ export default function renderSVG({
   speed,
   stroke = '#7D5C65',
   fill = 'white',
-  text = '-',
+  text = 'Невідомий',
   angle
 }) {
   const arrow = `
