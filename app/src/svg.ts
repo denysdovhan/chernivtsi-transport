@@ -1,10 +1,19 @@
-export default function renderSVG({
+interface ToSVGParams {
+  speed: number;
+  angle: number;
+  stroke?: string;
+  fill?: string;
+  text?: string;
+}
+
+// TODO: Split to smaller functions
+export default function toSVG({
   speed,
+  angle,
   stroke = '#7D5C65',
   fill = 'white',
-  text = 'Невідомий',
-  angle
-}) {
+  text = 'Невідомий'
+}: ToSVGParams): string {
   const arrow = `
     <path
       transform="rotate(${angle}, 13.663, 19)"
