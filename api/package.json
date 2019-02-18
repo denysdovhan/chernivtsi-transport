@@ -2,6 +2,8 @@
   "name": "api",
   "version": "0.1.0",
   "private": true,
+  "main": "build/index.js",
+  "types": "./build/types.d.ts",
   "scripts": {
     "start": "forever build/index.js",
     "start:dev": "forever --watch -m 1 --c 'node --inspect -r ts-node/register' src/index.ts",
