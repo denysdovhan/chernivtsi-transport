@@ -8,14 +8,14 @@
   ],
   "scripts": {
     "start": "lerna run start --stream",
-    "start:api": "lerna run start --scope api",
-    "start:app": "lerna run start --scope app",
-    "start:dev": "lerna run --stream start:dev",
-    "start:dev:api": "lerna run --scope api start:dev",
-    "start:dev:app": "lerna run --scope app start:dev",
+    "start:api": "lerna run --scope @chernivtsi-transport/api start",
+    "start:app": "lerna run --scope @chernivtsi-transport/app start",
+    "start:dev": "lerna run start:dev --stream",
+    "start:dev:api": "lerna run --scope @chernivtsi-transport/api start:dev",
+    "start:dev:app": "lerna run --scope @chernivtsi-transport/app start:dev",
     "build": "lerna run build --stream",
-    "build:api": "lerna run --scope api build --stream",
-    "build:app": "lerna run --scope app build --stream",
+    "build:api": "lerna run --scope @chernivtsi-transport/api build",
+    "build:app": "lerna run --scope @chernivtsi-transport/app build",
     "lint": "eslint \"**/*.{js,ts,tsx}\""
   },
   "dependencies": {
