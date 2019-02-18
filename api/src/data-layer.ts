@@ -4,7 +4,7 @@ import * as TransportCV from './transport-cv';
 import { Tracker, Route } from './types';
 
 type Token = string | null;
-type Callback = (...args: any) => any;
+type Callback<Data> = (data: Data) => void;
 
 export default class DataLayer extends EventEmmiter {
   public constructor() {
@@ -71,7 +71,7 @@ export default class DataLayer extends EventEmmiter {
     }
   }
 
-  public subscribe(callback: Callback): void {
+  public subscribe(callback: Callback<Tracker[]>): void {
     if (this.listenerCount('trackers') === 0) {
       // If this is the first listener, then update trackers immediately
       this.updateTrackers();
@@ -88,7 +88,7 @@ export default class DataLayer extends EventEmmiter {
     console.log(`${this.listenerCount('trackers')} subscribers...`);
   }
 
-  public unsubscribe(callback: Callback): void {
+  public unsubscribe(callback: Callback<Tracker[]>): void {
     if (this.listenerCount('trackers') === 1 && this.updateTrackersIntervalId) {
       // If the last listener is unsubscribing, then stop the interval
       clearInterval(this.updateTrackersIntervalId);

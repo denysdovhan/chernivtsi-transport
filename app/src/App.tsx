@@ -139,7 +139,7 @@ class App extends React.Component<{}, AppState> {
     const stream: EventStreamClient = new EventStreamClient(
       `${API_URI}/events`
     );
-    stream.receive((data: Tracker[]) => {
+    stream.receive<Tracker[]>((data: Tracker[] | null) => {
       if (Array.isArray(data)) {
         this.setState({ markers: { loading: false, error: null, data } });
       }
@@ -180,19 +180,6 @@ class App extends React.Component<{}, AppState> {
     } else {
       // eslint-disable-next-line
       // Show error about missing geolocation
-    }
-  };
-
-  private jumpToUserPosition = () => {
-    if (this.state.userPosition) {
-      this.setState(({ userPosition }) => {
-        return {
-          viewport: {
-            center: [userPosition!.latitude, userPosition!.longitude],
-            zoom: 16
-          }
-        };
-      });
     }
   };
 

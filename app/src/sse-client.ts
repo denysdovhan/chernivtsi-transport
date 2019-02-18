@@ -1,9 +1,12 @@
-type Callback = (...args: any) => any;
 interface EventStreamEvent extends Event {
-  data: any;
+  data: string;
 }
+type Callback<Data> = (
+  data: Data | null,
+  nativeEvent: EventStreamEvent
+) => void;
 
-function safeJSONParse(json: string): JSON | null {
+function safeJSONParse<T>(json: string): T | null {
   try {
     return JSON.parse(json);
   } catch (e) {
@@ -20,19 +23,19 @@ export default class EventStreamClient {
 
   private source: EventSource;
 
-  public on(event: string, callback: Callback): EventStreamClient {
+  public on<Data>(event: string, callback: Callback<Data>): EventStreamClient {
     this.source.addEventListener(
       event,
       (nativeEvent: Event): void =>
         callback(
-          safeJSONParse((nativeEvent as EventStreamEvent).data),
-          nativeEvent
+          safeJSONParse<Data>((nativeEvent as EventStreamEvent).data),
+          nativeEvent as EventStreamEvent
         )
     );
     return this;
   }
 
-  public receive(callback: Callback): EventStreamClient {
+  public receive<Data>(callback: Callback<Data>): EventStreamClient {
     this.on('message', callback);
     return this;
   }

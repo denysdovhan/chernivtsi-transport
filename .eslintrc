@@ -20,7 +20,10 @@
   },
   "rules": {
     "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
     "react/jsx-filename-extension": "off",
-    "react/prop-types": "off"
+    "react/destructuring-assignment": "off",
+    "react/prop-types": "off",
+    "no-console": "off"
   }
 }
