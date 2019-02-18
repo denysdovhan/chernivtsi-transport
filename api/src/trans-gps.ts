@@ -23,8 +23,8 @@ export interface TransGPSRoute {
 
 export interface TransGPSTracker {
   id: number;
-  lat: string; // latitude, i.e '48.32459333333333'
-  lng: string; // longitude, i.e '25.933766666666667'
+  lat: number; // latitude, i.e '48.32459333333333'
+  lng: number; // longitude, i.e '25.933766666666667'
   orientation: string; // angle, i.e '000.00'
   speed: string; // speed, i.e '000.0'
   gpstime: string; // datetime, i.e '2018-12-23 15:16:27'
@@ -65,8 +65,8 @@ export function toTracker({
 }: TransGPSTracker): Tracker {
   return {
     id: `${namespace}:${id}`,
-    latitude: Number(lat),
-    longitude: Number(lng),
+    latitude: lat / 6, // because why not? P.S: trans-gps uses that condition
+    longitude: lng / 6, // because why not?
     angle: Number(orientation),
     speed: Number(speed),
     datetime: gpstime,
