@@ -152,7 +152,7 @@ class App extends React.Component<{}, AppState> {
         position => {
           const { userPosition } = this.state;
 
-          if (userPosition) {
+          if (!userPosition) {
             return this.setState({
               viewport: {
                 center: [position.coords.latitude, position.coords.longitude],
