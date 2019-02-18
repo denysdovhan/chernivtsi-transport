@@ -1,9 +1,10 @@
-import React from 'react';
-import L from 'leaflet';
+import React, { ReactElement } from 'react';
+import L, { LatLngTuple } from 'leaflet';
 import * as RL from 'react-leaflet';
 import styled from 'styled-components';
+import { Tracker, Route } from '@chernivtsi-transport/api'; // eslint-disable-line
 import EventStreamClient from './sse-client';
-import renderSVG from './svg';
+import toSVG from './svg';
 import { API_URI } from './config';
 
 const tileLayer =
@@ -12,7 +13,7 @@ const attribution =
   '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>';
 
 const root = {
-  position: [48.2916063, 25.9345009],
+  position: [48.2916063, 25.9345009] as LatLngTuple,
   zoom: 13
 };
 
@@ -55,7 +56,15 @@ const Card = styled.div`
   border: 1px solid #eee;
 `;
 
-const UserMaker = ({ position, accuracy = 7 }) => (
+interface UserMakerProps {
+  position: LatLngTuple;
+  accuracy: number;
+}
+
+const UserMaker: React.SFC<UserMakerProps> = ({
+  position,
+  accuracy = 7
+}): ReactElement => (
   <>
     <RL.Circle center={position} radius={accuracy} weight={1} />
     <RL.CircleMarker
@@ -68,72 +77,101 @@ const UserMaker = ({ position, accuracy = 7 }) => (
   </>
 );
 
-class App extends React.Component {
-  state = {
+interface AppState {
+  viewport: {
+    center: LatLngTuple;
+    zoom: number;
+  };
+  currentMarkerId: string | null;
+  markers: {
+    loading: boolean;
+    error: Error | null;
+    data: Tracker[];
+  };
+  routes: {
+    loading: boolean;
+    error: Error | null;
+    data: Route[];
+  };
+  userPosition: {
+    latitude: number;
+    longitude: number;
+    accuracy: number;
+  } | null;
+}
+
+class App extends React.Component<{}, AppState> {
+  public state: AppState = {
     viewport: {
       center: [48.2916063, 25.9345009],
       zoom: 13
     },
     currentMarkerId: null,
     markers: {
-      isLoading: true,
+      loading: true,
+      error: null,
       data: []
     },
     routes: {
-      isLoading: true,
+      loading: true,
+      error: null,
       data: []
     },
     userPosition: null
   };
 
-  componentDidMount() {
+  public componentDidMount(): void {
     this.fetchRoutes()
       .then(this.setupClient)
       .then(this.watchPosition);
   }
 
-  fetchRoutes = () => {
+  private fetchRoutes = () => {
     return fetch(`${API_URI}/routes`)
-      .then(response => response.json())
-      .then(data => this.setState({ routes: { isLoading: false, data } }))
+      .then((response: Response) => response.json())
+      .then((data: Route[]) =>
+        this.setState({ routes: { loading: false, error: null, data } })
+      )
       .catch(console.error); // eslint-disable-line
   };
 
-  setupClient = () => {
-    const stream = new EventStreamClient(`${API_URI}/events`);
-    stream.receive(data => {
+  private setupClient = () => {
+    const stream: EventStreamClient = new EventStreamClient(
+      `${API_URI}/events`
+    );
+    stream.receive((data: Tracker[]) => {
       if (Array.isArray(data)) {
-        this.setState({ markers: { isLoading: false, data } });
+        this.setState({ markers: { loading: false, error: null, data } });
       }
     });
   };
 
-  watchPosition = () => {
+  private watchPosition = () => {
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition(
         position => {
-          this.setState(({ userPosition }) => {
-            if (!userPosition) {
-              return {
-                viewport: {
-                  center: [position.coords.latitude, position.coords.longitude],
-                  zoom: 16
-                },
-                userPosition: {
-                  latitude: position.coords.latitude,
-                  longitude: position.coords.longitude,
-                  accuracy: position.coords.accuracy
-                }
-              };
-            }
+          const { userPosition } = this.state;
 
-            return {
+          if (userPosition) {
+            return this.setState({
+              viewport: {
+                center: [position.coords.latitude, position.coords.longitude],
+                zoom: 16
+              },
               userPosition: {
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude,
                 accuracy: position.coords.accuracy
               }
-            };
+            });
+          }
+
+          return this.setState({
+            userPosition: {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              accuracy: position.coords.accuracy
+            }
           });
         },
         // eslint-disable-next-line
@@ -145,16 +183,20 @@ class App extends React.Component {
     }
   };
 
-  jumpToUserPosition = () => {
-    this.setState(({ userPosition }) => ({
-      viewport: {
-        center: [userPosition.latitude, userPosition.longitude],
-        zoom: 16
-      }
-    }));
+  private jumpToUserPosition = () => {
+    if (this.state.userPosition) {
+      this.setState(({ userPosition }) => {
+        return {
+          viewport: {
+            center: [userPosition!.latitude, userPosition!.longitude],
+            zoom: 16
+          }
+        };
+      });
+    }
   };
 
-  render() {
+  public render(): ReactElement {
     const {
       routes,
       markers,
@@ -163,8 +205,8 @@ class App extends React.Component {
       userPosition
     } = this.state;
 
-    if (routes.isLoading || markers.isLoading) {
-      return <LoadingScreen />;
+    if (routes.loading || markers.loading) {
+      return <LoadingScreen>Loading...</LoadingScreen>;
     }
 
     return (
@@ -183,10 +225,9 @@ class App extends React.Component {
           style={{ height: '100%' }}
           onClick={() => this.setState({ currentMarkerId: null })}
           viewport={viewport}
-          onViewportChanged={console.log} // eslint-disable-line
         >
           <RL.TileLayer url={tileLayer} attribution={attribution} />
-          {markers.data.map(marker => {
+          {markers.data.map((marker: Tracker) => {
             const routeForMarker = routes.data.find(
               route => route.id === marker.routeId
             );
@@ -196,7 +237,7 @@ class App extends React.Component {
                 key={marker.id}
                 position={[marker.latitude, marker.longitude]}
                 icon={L.icon({
-                  iconUrl: renderSVG({
+                  iconUrl: toSVG({
                     speed: marker.speed,
                     angle: marker.angle,
                     text: routeForMarker ? routeForMarker.name : 'Невідомий',
