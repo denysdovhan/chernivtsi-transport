@@ -1,5 +1,3 @@
-/* eslint no-console: 0 */
-
 // This optional code is used to register a service worker.
 // register() is not called by default.
 
@@ -22,7 +20,12 @@ const isLocalhost = Boolean(
     )
 );
 
-function registerValidSW(swUrl, config) {
+interface Config {
+  onSuccess?: (registration: ServiceWorkerRegistration) => void;
+  onUpdate?: (registration: ServiceWorkerRegistration) => void;
+}
+
+function registerValidSW(swUrl: string, config?: Config) {
   navigator.serviceWorker
     .register(swUrl)
     .then(registration => {
@@ -67,7 +70,7 @@ function registerValidSW(swUrl, config) {
     });
 }
 
-function checkValidServiceWorker(swUrl, config) {
+function checkValidServiceWorker(swUrl: string, config?: Config) {
   // Check if the service worker can be found. If it can't reload the page.
   fetch(swUrl)
     .then(response => {
@@ -95,10 +98,13 @@ function checkValidServiceWorker(swUrl, config) {
     });
 }
 
-export function register(config) {
+export function register(config?: Config) {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
-    const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
+    const publicUrl = new URL(
+      (process as { env: { [key: string]: string } }).env.PUBLIC_URL,
+      window.location.href
+    );
     if (publicUrl.origin !== window.location.origin) {
       // Our service worker won't work if PUBLIC_URL is on a different origin
       // from what our page is served on. This might happen if a CDN is used to
