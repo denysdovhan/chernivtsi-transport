@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */
+
 // This optional code is used to register a service worker.
 // register() is not called by default.
 
@@ -25,7 +27,7 @@ interface Config {
   onUpdate?: (registration: ServiceWorkerRegistration) => void;
 }
 
-function registerValidSW(swUrl: string, config?: Config) {
+function registerValidSW(swUrl: string, config?: Config): void {
   navigator.serviceWorker
     .register(swUrl)
     .then(registration => {
@@ -70,7 +72,7 @@ function registerValidSW(swUrl: string, config?: Config) {
     });
 }
 
-function checkValidServiceWorker(swUrl: string, config?: Config) {
+function checkValidServiceWorker(swUrl: string, config?: Config): void {
   // Check if the service worker can be found. If it can't reload the page.
   fetch(swUrl)
     .then(response => {
@@ -98,7 +100,7 @@ function checkValidServiceWorker(swUrl: string, config?: Config) {
     });
 }
 
-export function register(config?: Config) {
+export function register(config?: Config): void {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(
@@ -135,7 +137,7 @@ export function register(config?: Config) {
   }
 }
 
-export function unregister() {
+export function unregister(): void {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.ready.then(registration => {
       registration.unregister();
