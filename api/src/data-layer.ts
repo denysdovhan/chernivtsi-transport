@@ -20,7 +20,7 @@ export default class DataLayer extends EventEmmiter {
 
   private trackers: Tracker[];
 
-  private updateTrackersIntervalId: NodeJS.Timeout | null;
+  private updateTrackersIntervalId: number | null;
 
   private async fetchToken(): Promise<Token> {
     try {

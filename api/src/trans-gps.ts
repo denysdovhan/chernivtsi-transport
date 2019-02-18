@@ -1,4 +1,4 @@
-import fetch, { Request, Response } from 'node-fetch';
+import fetch, { Response } from 'node-fetch';
 import { Route, Tracker } from './types';
 
 // TODO: Collect route's checkpoints
