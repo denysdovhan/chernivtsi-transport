@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/chernivtsi-transport/precache-manifest.2810a2b5a4f015dc8a2183a7b6df751a.js"
+  "/chernivtsi-transport/precache-manifest.bb6088523782f5d9cc2bae070c6bd175.js"
 );
 
 workbox.clientsClaim();
