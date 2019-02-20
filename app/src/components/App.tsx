@@ -3,25 +3,15 @@ import L, { LatLngTuple } from 'leaflet';
 import * as RL from 'react-leaflet';
 import styled from 'styled-components';
 import { Tracker, Route } from '@chernivtsi-transport/api'; // eslint-disable-line
-import EventStreamClient from './sse-client';
-import toSVG from './svg';
-import { API_URI } from './config';
-
-const tileLayer =
-  'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
-const attribution =
-  '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>';
+import EventStreamClient from '../utils/sse';
+import toSVG from '../utils/svg';
+import { API_URI, MAP_TILE_LAYER, MAP_ATTRIBUTION } from '../config';
+import { Card, UserMarker, LoadingScreen } from '.';
 
 const root = {
   position: [48.2916063, 25.9345009] as LatLngTuple,
   zoom: 13
 };
-
-const LoadingScreen = styled.div`
-  background-color: yellow;
-  height: 100%;
-  width: 100%;
-`;
 
 const TopBar = styled.div`
   position: fixed;
@@ -45,37 +35,6 @@ const BottomBar = styled.div`
   left: 0;
   right: 0;
 `;
-
-const Card = styled.div`
-  background-color: white;
-  margin: 0.5rem;
-  padding: 1rem;
-  border-radius: 5px;
-  color: #666;
-  box-shadow: 0 2px 3px #d6d6d6;
-  border: 1px solid #eee;
-`;
-
-interface UserMakerProps {
-  position: LatLngTuple;
-  accuracy: number;
-}
-
-const UserMaker: React.SFC<UserMakerProps> = ({
-  position,
-  accuracy = 7
-}): ReactElement => (
-  <>
-    <RL.Circle center={position} radius={accuracy} weight={1} />
-    <RL.CircleMarker
-      center={position}
-      radius={7}
-      fillColor="#3388ff"
-      color="#2277ee"
-      fillOpacity={1}
-    />
-  </>
-);
 
 interface AppState {
   viewport: {
@@ -213,7 +172,7 @@ class App extends React.Component<{}, AppState> {
           onClick={() => this.setState({ currentMarkerId: null })}
           viewport={viewport}
         >
-          <RL.TileLayer url={tileLayer} attribution={attribution} />
+          <RL.TileLayer url={MAP_TILE_LAYER} attribution={MAP_ATTRIBUTION} />
           {markers.data.map((marker: Tracker) => {
             const routeForMarker = routes.data.find(
               route => route.id === marker.routeId
@@ -230,14 +189,15 @@ class App extends React.Component<{}, AppState> {
                     text: routeForMarker ? routeForMarker.name : 'Невідомий',
                     stroke: routeForMarker ? routeForMarker.color : 'gray'
                   }),
-                  iconAnchor: [13, 19]
+                  iconAnchor: [13, 19],
+                  className: 'animated-marker'
                 })}
                 onClick={() => this.setState({ currentMarkerId: marker.id })}
               />
             );
           })}
           {userPosition && (
-            <UserMaker
+            <UserMarker
               position={[userPosition.latitude, userPosition.longitude]}
               accuracy={userPosition.accuracy}
             />
