@@ -36,11 +36,13 @@ const BottomBar = styled.div`
   right: 0;
 `;
 
+interface Viewport {
+  center: LatLngTuple;
+  zoom: number;
+}
+
 interface AppState {
-  viewport: {
-    center: LatLngTuple;
-    zoom: number;
-  };
+  viewport: Viewport;
   currentMarkerId: string | null;
   markers: {
     loading: boolean;
@@ -142,6 +144,10 @@ class App extends React.Component<{}, AppState> {
     }
   };
 
+  private handleViewportChange = (viewport: Viewport): void => {
+    this.setState({ viewport });
+  };
+
   public render(): ReactElement {
     const {
       routes,
@@ -171,6 +177,7 @@ class App extends React.Component<{}, AppState> {
           style={{ height: '100%' }}
           onClick={() => this.setState({ currentMarkerId: null })}
           viewport={viewport}
+          onViewportChange={this.handleViewportChange}
         >
           <RL.TileLayer url={MAP_TILE_LAYER} attribution={MAP_ATTRIBUTION} />
           {markers.data.map((marker: Tracker) => {
@@ -187,7 +194,8 @@ class App extends React.Component<{}, AppState> {
                     speed: marker.speed,
                     angle: marker.angle,
                     text: routeForMarker ? routeForMarker.name : 'Невідомий',
-                    stroke: routeForMarker ? routeForMarker.color : 'gray'
+                    stroke: routeForMarker ? routeForMarker.color : 'gray',
+                    isDetailed: viewport.zoom > 14
                   }),
                   iconAnchor: [13, 19],
                   className: 'animated-marker'
