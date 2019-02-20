@@ -25,8 +25,8 @@ const LoadingContainer = styled.div`
 `;
 
 const Image = styled.img`
-  width: 30%;
-  max-width: 150px;
+  width: 20%;
+  max-width: 100px;
   margin: 2rem;
   animation: 1s ${pulse} linear infinite;
 `;
@@ -34,7 +34,7 @@ const Image = styled.img`
 const Headline = styled.h2`
   color: #7d5c65;
   font-weight: normal;
-  font-size: 2rem;
+  font-size: 1rem;
 `;
 
 const LoadingScreen: React.SFC = (): React.ReactElement => (
