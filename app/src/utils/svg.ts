@@ -4,7 +4,7 @@ interface ToSVGParams {
   stroke?: string;
   fill?: string;
   text?: string;
-  isDetailed?: boolean;
+  detailed?: boolean;
 }
 
 export function renderArrow(
@@ -71,16 +71,15 @@ export function toBase64(svg: string): string {
   return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`;
 }
 
-// TODO: Split to smaller functions
 export default function toSVG({
   angle,
   speed = 0,
   stroke = '#7D5C65',
   fill = 'white',
   text = 'Невідомий',
-  isDetailed = true
+  detailed = true
 }: ToSVGParams): string {
-  const width = isDetailed ? 110 : 40;
+  const width = detailed ? 110 : 40;
 
   return toBase64(`
     <svg
@@ -90,7 +89,7 @@ export default function toSVG({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      ${isDetailed ? renderInfo(text, speed, stroke) : ''}
+      ${detailed ? renderInfo(text, speed, stroke) : ''}
       ${renderIcon(stroke, fill)}
       ${speed > 2 ? renderArrow(angle, stroke) : ''}
     </svg>

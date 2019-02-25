@@ -1,17 +1,11 @@
 import React, { ReactElement } from 'react';
-import L, { LatLngTuple } from 'leaflet';
-import * as RL from 'react-leaflet';
 import styled from 'styled-components';
 import { Tracker, Route } from '@chernivtsi-transport/api'; // eslint-disable-line
 import EventStreamClient from '../utils/sse';
-import toSVG from '../utils/svg';
-import { API_URI, MAP_TILE_LAYER, MAP_ATTRIBUTION } from '../config';
-import { Card, UserMarker, LoadingScreen } from '.';
-
-const root = {
-  position: [48.2916063, 25.9345009] as LatLngTuple,
-  zoom: 13
-};
+import { API_URI, MAP_DETAILED_ZOOM_THRESHOLD } from '../config';
+import { Card, UserMarker, LoadingScreen, Map } from '.';
+import { AppState, Viewport } from '../types';
+import Trackers from './Trackers';
 
 const TopBar = styled.div`
   position: fixed;
@@ -35,31 +29,6 @@ const BottomBar = styled.div`
   left: 0;
   right: 0;
 `;
-
-interface Viewport {
-  center: LatLngTuple;
-  zoom: number;
-}
-
-interface AppState {
-  viewport: Viewport;
-  currentMarkerId: string | null;
-  markers: {
-    loading: boolean;
-    error: Error | null;
-    data: Tracker[];
-  };
-  routes: {
-    loading: boolean;
-    error: Error | null;
-    data: Route[];
-  };
-  userPosition: {
-    latitude: number;
-    longitude: number;
-    accuracy: number;
-  } | null;
-}
 
 class App extends React.Component<{}, AppState> {
   public state: AppState = {
@@ -117,7 +86,7 @@ class App extends React.Component<{}, AppState> {
             return this.setState({
               viewport: {
                 center: [position.coords.latitude, position.coords.longitude],
-                zoom: 16
+                zoom: MAP_DETAILED_ZOOM_THRESHOLD
               },
               userPosition: {
                 latitude: position.coords.latitude,
@@ -152,65 +121,38 @@ class App extends React.Component<{}, AppState> {
     const {
       routes,
       markers,
-      viewport,
       currentMarkerId,
-      userPosition
+      userPosition,
+      viewport
     } = this.state;
 
     if (routes.loading || markers.loading) {
-      return <LoadingScreen>Loading...</LoadingScreen>;
+      return <LoadingScreen />;
     }
 
     return (
       <>
         <TopBar />
-        <RL.Map
-          center={root.position}
-          zoom={13}
-          maxZoom={20}
-          minZoom={12}
-          maxBounds={[
-            [48.37778737618847, 25.789501368999485],
-            [48.1783186753248, 26.095058619976047]
-          ]}
-          zoomControl={false}
-          style={{ height: '100%' }}
+        <Map
+          {...viewport}
           onClick={() => this.setState({ currentMarkerId: null })}
-          viewport={viewport}
           onViewportChange={this.handleViewportChange}
         >
-          <RL.TileLayer url={MAP_TILE_LAYER} attribution={MAP_ATTRIBUTION} />
-          {markers.data.map((marker: Tracker) => {
-            const routeForMarker = routes.data.find(
-              route => route.id === marker.routeId
-            );
-
-            return (
-              <RL.Marker
-                key={marker.id}
-                position={[marker.latitude, marker.longitude]}
-                icon={L.icon({
-                  iconUrl: toSVG({
-                    speed: marker.speed,
-                    angle: marker.angle,
-                    text: routeForMarker ? routeForMarker.name : 'Невідомий',
-                    stroke: routeForMarker ? routeForMarker.color : 'gray',
-                    isDetailed: viewport.zoom > 14
-                  }),
-                  iconAnchor: [13, 19],
-                  className: 'animated-marker'
-                })}
-                onClick={() => this.setState({ currentMarkerId: marker.id })}
-              />
-            );
-          })}
+          <Trackers
+            trackers={markers.data}
+            routes={routes.data}
+            onTrackerClick={tracker =>
+              this.setState({ currentMarkerId: tracker.id })
+            }
+            detailed={viewport.zoom >= MAP_DETAILED_ZOOM_THRESHOLD}
+          />
           {userPosition && (
             <UserMarker
               position={[userPosition.latitude, userPosition.longitude]}
               accuracy={userPosition.accuracy}
             />
           )}
-        </RL.Map>
+        </Map>
         <BottomBar>
           {currentMarkerId && (
             <Card>
