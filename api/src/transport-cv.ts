@@ -78,17 +78,29 @@ export function toTracker({
 }
 
 export function fetchToken(): Promise<string> {
-  return fetch(api.token)
-    .then((response: Response) => response.url)
-    .then((url: string) => {
-      const match = url.match(/jsessionid=([A-Z0-9]+)/i);
+  return fetch(api.token, {
+    redirect: 'manual'
+  })
+    .then((response: Response) => {
+      const setCookie = response.headers.get('set-cookie');
 
-      if (match && match.length > 0) {
-        return match[1];
+      if (setCookie) {
+        return setCookie.toString();
       }
 
-      throw new Error('Cannot get token for transport.cv.ua!');
-    });
+      throw new Error('Missing token header for transport.cv.ua!');
+    })
+    .then(
+      (cookie: string): string => {
+        const match = cookie.match(/jsessionid=([A-Z0-9]+)/i);
+
+        if (match && match.length > 0) {
+          return match[1];
+        }
+
+        throw new Error('Cannot retrieve token for transport.cv.ua!');
+      }
+    );
 }
 
 export function fetchRoutes(token: string): Promise<Route[]> {
