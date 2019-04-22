@@ -7,6 +7,12 @@ type Token = string | null;
 type Callback<Data> = (data: Data) => void;
 
 export default class DataLayer extends EventEmmiter {
+  private token: Token;
+
+  private trackers: Tracker[];
+
+  private updateTrackersIntervalId: number | null;
+
   public constructor() {
     super();
     this.token = null;
@@ -15,12 +21,6 @@ export default class DataLayer extends EventEmmiter {
 
     this.fetchToken();
   }
-
-  private token: Token;
-
-  private trackers: Tracker[];
-
-  private updateTrackersIntervalId: NodeJS.Timeout | null;
 
   private async fetchToken(): Promise<Token> {
     try {
