@@ -4,7 +4,7 @@ import * as RL from 'react-leaflet';
 
 interface UserMakerProps {
   position: L.LatLngTuple;
-  accuracy: number;
+  accuracy: number | null;
 }
 
 const UserMaker: React.SFC<UserMakerProps> = ({
@@ -12,7 +12,7 @@ const UserMaker: React.SFC<UserMakerProps> = ({
   accuracy = 7
 }): React.ReactElement => (
   <>
-    <RL.Circle center={position} radius={accuracy} weight={1} />
+    <RL.Circle center={position} radius={Number(accuracy)} weight={1} />
     <RL.CircleMarker
       center={position}
       radius={7}

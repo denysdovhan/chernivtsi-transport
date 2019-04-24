@@ -1,10 +1,11 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useGeolocation, useAsync } from 'react-use';
 import { Tracker, Route } from '@chernivtsi-transport/api'; // eslint-disable-line
 import EventStreamClient from '../utils/sse';
 import { API_URI, MAP_DETAILED_ZOOM_THRESHOLD } from '../config';
 import { Card, UserMarker, LoadingScreen, Map } from '.';
-import { AppState, Viewport } from '../types';
+import { Viewport } from '../types';
 import Trackers from './Trackers';
 
 const TopBar = styled.div`
@@ -30,143 +31,89 @@ const BottomBar = styled.div`
   right: 0;
 `;
 
-class App extends React.Component<{}, AppState> {
-  public state: AppState = {
-    viewport: {
-      center: [48.2916063, 25.9345009],
-      zoom: 13
-    },
-    currentMarkerId: null,
-    markers: {
-      loading: true,
-      error: null,
-      data: []
-    },
-    routes: {
-      loading: true,
-      error: null,
-      data: []
-    },
-    userPosition: null
-  };
+function useTrackers(): [Tracker[], (trackers: Tracker[]) => void] {
+  const [trackers, setTrackers] = useState<Tracker[]>([]);
 
-  public componentDidMount(): void {
-    this.fetchRoutes()
-      .then(this.setupClient)
-      .then(this.watchPosition);
-  }
-
-  private fetchRoutes = () => {
-    return fetch(`${API_URI}/routes`)
-      .then((response: Response) => response.json())
-      .then((data: Route[]) =>
-        this.setState({ routes: { loading: false, error: null, data } })
-      )
-      .catch(console.error); // eslint-disable-line
-  };
-
-  private setupClient = () => {
-    const stream: EventStreamClient = new EventStreamClient(
+  useEffect(() => {
+    let stream: EventStreamClient | null = new EventStreamClient(
       `${API_URI}/events`
     );
+
     stream.receive<Tracker[]>((data: Tracker[] | null) => {
       if (Array.isArray(data)) {
-        this.setState({ markers: { loading: false, error: null, data } });
+        setTrackers(data);
       }
     });
-  };
 
-  private watchPosition = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(
-        position => {
-          const { userPosition } = this.state;
+    return () => {
+      stream = null;
+    };
+  }, []);
 
-          if (!userPosition) {
-            return this.setState({
-              viewport: {
-                center: [position.coords.latitude, position.coords.longitude],
-                zoom: MAP_DETAILED_ZOOM_THRESHOLD
-              },
-              userPosition: {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-                accuracy: position.coords.accuracy
-              }
-            });
-          }
-
-          return this.setState({
-            userPosition: {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-              accuracy: position.coords.accuracy
-            }
-          });
-        },
-        // eslint-disable-next-line
-        error => console.error(error)
-      );
-    } else {
-      // eslint-disable-next-line
-      // Show error about missing geolocation
-    }
-  };
-
-  private handleViewportChange = (viewport: Viewport): void => {
-    this.setState({ viewport });
-  };
-
-  public render(): ReactElement {
-    const {
-      routes,
-      markers,
-      currentMarkerId,
-      userPosition,
-      viewport
-    } = this.state;
-
-    if (routes.loading || markers.loading) {
-      return <LoadingScreen />;
-    }
-
-    return (
-      <>
-        <TopBar />
-        <Map
-          {...viewport}
-          onClick={() => this.setState({ currentMarkerId: null })}
-          onViewportChange={this.handleViewportChange}
-        >
-          <Trackers
-            trackers={markers.data}
-            routes={routes.data}
-            onTrackerClick={tracker =>
-              this.setState({ currentMarkerId: tracker.id })
-            }
-            detailed={viewport.zoom >= MAP_DETAILED_ZOOM_THRESHOLD}
-          />
-          {userPosition && (
-            <UserMarker
-              position={[userPosition.latitude, userPosition.longitude]}
-              accuracy={userPosition.accuracy}
-            />
-          )}
-        </Map>
-        <BottomBar>
-          {currentMarkerId && (
-            <Card>
-              {JSON.stringify(
-                markers.data.find(marker => marker.id === currentMarkerId),
-                null,
-                2
-              )}
-            </Card>
-          )}
-        </BottomBar>
-      </>
-    );
-  }
+  return [trackers, setTrackers];
 }
+
+export const App: React.SFC = (): ReactElement => {
+  const [viewport, setViewport] = useState<Viewport>({
+    center: [48.2916063, 25.9345009],
+    zoom: 13
+  });
+  const [selectedMarker, setSelectedMarker] = useState<string | null>(null);
+  const [trackers] = useTrackers();
+  const userLocation = useGeolocation();
+  const routes = useAsync<Route[]>(
+    () =>
+      fetch(`${API_URI}/routes`).then((response: Response) => response.json()),
+    []
+  );
+
+  useEffect(() => {
+    if (userLocation && userLocation.latitude && userLocation.longitude) {
+      setViewport({
+        center: [Number(userLocation.latitude), Number(userLocation.longitude)],
+        zoom: MAP_DETAILED_ZOOM_THRESHOLD
+      });
+    }
+  }, []);
+
+  if (routes.loading && !routes.value) {
+    return <LoadingScreen />;
+  }
+
+  return (
+    <>
+      <TopBar />
+      <Map
+        {...viewport}
+        onClick={() => setSelectedMarker(null)}
+        onViewportChange={setViewport}
+      >
+        <Trackers
+          trackers={trackers}
+          routes={routes.value || []} // @TODO: Better solution
+          onTrackerClick={tracker => setSelectedMarker(tracker.id)}
+          detailed={viewport.zoom >= MAP_DETAILED_ZOOM_THRESHOLD}
+        />
+        {userLocation.latitude && userLocation.longitude && (
+          <UserMarker
+            position={[userLocation.latitude, userLocation.longitude]}
+            accuracy={userLocation.accuracy}
+          />
+        )}
+      </Map>
+      <BottomBar>
+        {selectedMarker && (
+          <Card>
+            {JSON.stringify(
+              trackers.find(tracker => tracker.id === selectedMarker),
+              null,
+              2
+            )}
+          </Card>
+        )}
+      </BottomBar>
+    </>
+  );
+};
 
 export default App;
