@@ -1,6 +1,9 @@
 import { Viewport } from './types';
 
-export const { NODE_ENV, PUBLIC_URL, REACT_APP_API_URI: API_URI } = process.env;
+export const { NODE_ENV, PUBLIC_URL, REACT_APP_API_URI } = process.env;
+
+export const API_URI =
+  REACT_APP_API_URI || `http://${window.location.hostname}:3001/api`;
 
 export const MAP_TILE_LAYER =
   'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
