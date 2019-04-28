@@ -1,6 +1,5 @@
 import React, { ReactElement, useState, useContext } from 'react';
 import styled from 'styled-components';
-import { Tracker } from '@chernivtsi-transport/api'; // eslint-disable-line
 import { useTrackers, useRoutes, useUserLocation } from '../hooks';
 import {
   Card,
