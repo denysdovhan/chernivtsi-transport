@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 import * as RL from 'react-leaflet';
 import {
+  MAP_DEFAULT_POSITION,
+  MAP_BOUNDS,
   MAP_TILE_LAYER,
-  MAP_ATTRIBUTION,
-  MAP_DEFAULT_POSITION
+  MAP_ATTRIBUTION
 } from '../config';
 import { Viewport } from '../types';
 
@@ -12,25 +13,19 @@ interface MapProps extends RL.MapProps {
   onViewportChange?: (viewport: Viewport) => void;
 }
 
-export default function Map({
-  children,
-  ...props
-}: MapProps): React.ReactElement {
-  return (
-    <RL.Map
-      {...MAP_DEFAULT_POSITION}
-      maxZoom={20}
-      minZoom={12}
-      maxBounds={[
-        [48.3777873761884, 25.789501368999485],
-        [48.1783186753248, 26.095058619976047]
-      ]}
-      zoomControl={false}
-      style={{ height: '100%' }}
-      {...props}
-    >
-      <RL.TileLayer url={MAP_TILE_LAYER} attribution={MAP_ATTRIBUTION} />
-      {children}
-    </RL.Map>
-  );
-}
+const Map: React.SFC<MapProps> = memo(({ children, ...props }) => (
+  <RL.Map
+    {...MAP_DEFAULT_POSITION}
+    maxZoom={20}
+    minZoom={12}
+    maxBounds={MAP_BOUNDS}
+    zoomControl={false}
+    style={{ height: '100%' }}
+    {...props}
+  >
+    <RL.TileLayer url={MAP_TILE_LAYER} attribution={MAP_ATTRIBUTION} />
+    {children}
+  </RL.Map>
+));
+
+export default Map;

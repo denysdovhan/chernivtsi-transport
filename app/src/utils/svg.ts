@@ -71,7 +71,7 @@ export function toBase64(svg: string): string {
   return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`;
 }
 
-export default function toSVG({
+export function toSVG({
   angle,
   speed = 0,
   stroke = '#7D5C65',

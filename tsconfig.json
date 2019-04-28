@@ -9,7 +9,6 @@
     "strictPropertyInitialization": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
-    "noUnusedLocals": true,
     "noImplicitReturns": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,

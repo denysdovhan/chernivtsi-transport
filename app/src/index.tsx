@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 import 'leaflet/dist/leaflet.css';
-import { GlobalStyles } from './components';
+import { GlobalStyles, ViewportProvider } from './components';
 
 ReactDOM.render(
-  <>
+  <ViewportProvider>
     <GlobalStyles />
     <App />
-  </>,
+  </ViewportProvider>,
   document.getElementById('root')
 );
 
