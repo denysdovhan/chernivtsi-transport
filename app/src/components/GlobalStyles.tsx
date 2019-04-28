@@ -26,6 +26,11 @@ const GlobalStyles = createGlobalStyle`
   /* Animation for moving markers */
   .animated-marker {
     transition: transform 6s linear;
+    will-change: transition;
+  }
+
+  .leaflet-zoom-anim .animated-marker {
+    transition: none;
   }
 `;
 
