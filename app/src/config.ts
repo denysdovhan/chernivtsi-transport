@@ -16,4 +16,9 @@ export const MAP_DEFAULT_POSITION: Viewport = {
   zoom: 13
 };
 
+export const MAP_BOUNDS: L.BoundsLiteral = [
+  [48.3777873761884, 25.789501368999485],
+  [48.1783186753248, 26.095058619976047]
+];
+
 export const MAP_DETAILED_ZOOM_THRESHOLD = 16;
