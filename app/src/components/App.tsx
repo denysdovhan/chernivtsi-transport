@@ -1,12 +1,16 @@
-import React, { ReactElement, useState, useEffect } from 'react';
+import React, { ReactElement, useState, useContext } from 'react';
 import styled from 'styled-components';
-import { useGeolocation, useAsync } from 'react-use';
-import { Tracker, Route } from '@chernivtsi-transport/api'; // eslint-disable-line
-import EventStreamClient from '../utils/sse';
-import { API_URI, MAP_DETAILED_ZOOM_THRESHOLD } from '../config';
-import { Card, UserMarker, LoadingScreen, Map } from '.';
-import { Viewport } from '../types';
-import Trackers from './Trackers';
+import { Tracker } from '@chernivtsi-transport/api'; // eslint-disable-line
+import { useTrackers, useRoutes, useUserLocation } from '../hooks';
+import {
+  Card,
+  UserMarker,
+  LoadingScreen,
+  Map,
+  Trackers,
+  ViewportContext
+} from '.';
+import { MAP_DETAILED_ZOOM_THRESHOLD } from '../config';
 
 const TopBar = styled.div`
   position: fixed;
@@ -31,52 +35,14 @@ const BottomBar = styled.div`
   right: 0;
 `;
 
-function useTrackers(): [Tracker[], (trackers: Tracker[]) => void] {
-  const [trackers, setTrackers] = useState<Tracker[]>([]);
-
-  useEffect(() => {
-    let stream: EventStreamClient | null = new EventStreamClient(
-      `${API_URI}/events`
-    );
-
-    stream.receive<Tracker[]>((data: Tracker[] | null) => {
-      if (Array.isArray(data)) {
-        setTrackers(data);
-      }
-    });
-
-    return () => {
-      stream = null;
-    };
-  }, []);
-
-  return [trackers, setTrackers];
-}
-
 export const App: React.SFC = (): ReactElement => {
-  const [viewport, setViewport] = useState<Viewport>({
-    center: [48.2916063, 25.9345009],
-    zoom: 13
-  });
+  const [viewport, setViewport] = useContext(ViewportContext);
   const [selectedMarker, setSelectedMarker] = useState<string | null>(null);
-  const [trackers] = useTrackers();
-  const userLocation = useGeolocation();
-  const routes = useAsync<Route[]>(
-    () =>
-      fetch(`${API_URI}/routes`).then((response: Response) => response.json()),
-    []
-  );
+  const [userLocation, resetToUserLocation] = useUserLocation();
+  const routes = useRoutes();
+  const trackers = useTrackers();
 
-  useEffect(() => {
-    if (userLocation && userLocation.latitude && userLocation.longitude) {
-      setViewport({
-        center: [Number(userLocation.latitude), Number(userLocation.longitude)],
-        zoom: MAP_DETAILED_ZOOM_THRESHOLD
-      });
-    }
-  }, []);
-
-  if (routes.loading && !routes.value) {
+  if (routes.loading || !routes.value) {
     return <LoadingScreen />;
   }
 
@@ -94,7 +60,7 @@ export const App: React.SFC = (): ReactElement => {
           onTrackerClick={tracker => setSelectedMarker(tracker.id)}
           detailed={viewport.zoom >= MAP_DETAILED_ZOOM_THRESHOLD}
         />
-        {userLocation.latitude && userLocation.longitude && (
+        {userLocation && userLocation.latitude && userLocation.longitude && (
           <UserMarker
             position={[userLocation.latitude, userLocation.longitude]}
             accuracy={userLocation.accuracy}
@@ -102,13 +68,18 @@ export const App: React.SFC = (): ReactElement => {
         )}
       </Map>
       <BottomBar>
+        <button type="button" onClick={resetToUserLocation}>
+          x
+        </button>
         {selectedMarker && (
           <Card>
-            {JSON.stringify(
-              trackers.find(tracker => tracker.id === selectedMarker),
-              null,
-              2
-            )}
+            <pre>
+              {JSON.stringify(
+                trackers.find(tracker => tracker.id === selectedMarker),
+                null,
+                2
+              )}
+            </pre>
           </Card>
         )}
       </BottomBar>
