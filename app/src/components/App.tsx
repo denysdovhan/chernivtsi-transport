@@ -1,6 +1,7 @@
-import React, { ReactElement, useState, useContext } from 'react';
+import React, { ReactElement, useState, useContext, useCallback } from 'react';
+import { useToggle } from 'react-use';
 import styled from 'styled-components';
-import { Tracker } from '@chernivtsi-transport/api'; // eslint-disable-line
+import { Tracker, Route } from '@chernivtsi-transport/api'; // eslint-disable-line
 import { useTrackers, useRoutes, useUserLocation } from '../hooks';
 import {
   Card,
@@ -42,6 +43,31 @@ export const App: React.SFC = (): ReactElement => {
   const routes = useRoutes();
   const trackers = useTrackers();
 
+  // FILTER
+  const [isFilterOpen, toggleFilter] = useToggle(false);
+  const [filters, setFilter] = useState<string[]>([]);
+  const handleCheckboxChange = useCallback(
+    (route: Route) => (event: React.SyntheticEvent) => {
+      const isChecked = filters.includes(route.id);
+
+      if (isChecked) {
+        return setFilter(filters.filter(id => id !== route.id));
+      }
+
+      return setFilter([...filters, route.id]);
+    },
+    [filters]
+  );
+
+  function applyFilter(
+    allTrackers: Tracker[] = [],
+    filterIds: string[] = []
+  ): Tracker[] {
+    if (filterIds.length === 0) return allTrackers;
+
+    return allTrackers.filter(tracker => filterIds.includes(tracker.routeId));
+  }
+
   if (routes.loading || !routes.value) {
     return <LoadingScreen />;
   }
@@ -55,7 +81,7 @@ export const App: React.SFC = (): ReactElement => {
         onViewportChange={setViewport}
       >
         <Trackers
-          trackers={trackers}
+          trackers={applyFilter(trackers, filters)}
           routes={routes.value || []} // @TODO: Better solution
           onTrackerClick={tracker => setSelectedMarker(tracker.id)}
           detailed={viewport.zoom >= MAP_DETAILED_ZOOM_THRESHOLD}
@@ -68,8 +94,25 @@ export const App: React.SFC = (): ReactElement => {
         )}
       </Map>
       <BottomBar>
+        {isFilterOpen && (
+          <Card style={{ height: 300, overflow: 'scroll' }}>
+            {routes.value.map(route => (
+              <div key={route.id}>
+                <input
+                  type="checkbox"
+                  checked={filters.includes(route.id)}
+                  onChange={handleCheckboxChange(route)}
+                />
+                <span>{route.name}</span>
+              </div>
+            ))}
+          </Card>
+        )}
         <button type="button" onClick={resetToUserLocation}>
-          x
+          {'📌'}
+        </button>
+        <button type="button" onClick={() => toggleFilter()}>
+          Filter
         </button>
         {selectedMarker && (
           <Card>
