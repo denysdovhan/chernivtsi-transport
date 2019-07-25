@@ -7,10 +7,10 @@
     "app"
   ],
   "scripts": {
-    "start": "lerna run start --stream",
+    "start": "lerna run start --parallel",
     "start:api": "lerna run --scope @chernivtsi-transport/api start",
     "start:app": "lerna run --scope @chernivtsi-transport/app start",
-    "start:dev": "lerna run start:dev --stream",
+    "start:dev": "lerna run start:dev --parallel",
     "start:dev:api": "lerna run --scope @chernivtsi-transport/api start:dev",
     "start:dev:app": "lerna run --scope @chernivtsi-transport/app start:dev",
     "build": "lerna run build --stream",
