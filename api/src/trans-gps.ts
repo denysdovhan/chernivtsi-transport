@@ -65,8 +65,8 @@ export function toTracker({
 }: TransGPSTracker): Tracker {
   return {
     id: `${namespace}:${id}`,
-    latitude: lat / 6, // because why not? P.S: trans-gps uses that condition
-    longitude: lng / 6, // because why not?
+    latitude: lat,
+    longitude: lng,
     angle: Number(orientation),
     speed: Number(speed),
     datetime: gpstime,
