@@ -21,4 +21,4 @@ export const MAP_BOUNDS: L.BoundsLiteral = [
   [48.1783186753248, 26.095058619976047]
 ];
 
-export const MAP_DETAILED_ZOOM_THRESHOLD = 16;
+export const MAP_DETAILED_ZOOM_THRESHOLD = 15;
