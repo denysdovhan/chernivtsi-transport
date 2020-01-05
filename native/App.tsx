@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { View } from 'native-base';
 import { Platform, StatusBar } from 'react-native';
 import AppNavigator from './navigation/AppNavigator';
@@ -15,6 +15,7 @@ async function loadResourcesAsync() {
     ]),
     Font.loadAsync({
       ...Ionicons.font,
+      ...FontAwesome.font,
       Roboto: require('native-base/Fonts/Roboto.ttf'),
       Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf')
     })

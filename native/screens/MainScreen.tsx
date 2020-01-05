@@ -24,7 +24,11 @@ export default props => {
         <Body>
           <Title>HomeScreen</Title>
         </Body>
-        <Right />
+        <Right>
+          <Button transparent onPress={() => props.navigation.toggleDrawer()}>
+            <Icon type="FontAwesome" name="filter" />
+          </Button>
+        </Right>
       </Header>
       <Content padder>
         <Text>Test app</Text>
