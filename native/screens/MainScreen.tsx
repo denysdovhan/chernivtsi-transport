@@ -1,28 +1,27 @@
 import React from 'react';
-import { Text } from 'react-native';
 import {
   Container,
   Header,
   Body,
   Title,
-  Content,
   Left,
   Button,
   Icon,
   Right
 } from 'native-base';
+import Map from '../components/Map';
 
 export default props => {
   return (
     <Container>
       <Header>
         <Left>
-          <Button transparent onPress={() => props.navigation.openDrawer()}>
+          <Button transparent onPress={() => props.navigation.toggleDrawer()}>
             <Icon name="menu" />
           </Button>
         </Left>
         <Body>
-          <Title>HomeScreen</Title>
+          <Title>Transport</Title>
         </Body>
         <Right>
           <Button transparent onPress={() => props.navigation.toggleDrawer()}>
@@ -30,9 +29,8 @@ export default props => {
           </Button>
         </Right>
       </Header>
-      <Content padder>
-        <Text>Test app</Text>
-      </Content>
+
+      <Map />
     </Container>
   );
 };
