@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default () => {
+export default props => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,6 +35,7 @@ export default () => {
     <View style={styles.container}>
       <MapView
         style={styles.map}
+        rotateEnabled={false}
         initialRegion={{
           latitude: 48.2916063,
           longitude: 25.9345009,
@@ -42,14 +43,7 @@ export default () => {
           longitudeDelta: 0.05
         }}
       >
-        <Marker
-          coordinate={{
-            latitude: 48.2916063,
-            longitude: 25.9345009
-          }}
-          title="Point"
-          description="Description"
-        />
+        {props.children}
       </MapView>
     </View>
   );

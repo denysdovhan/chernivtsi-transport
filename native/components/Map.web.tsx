@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default () => (
+export default props => (
   <View style={styles.container}>
     <RL.Map
       center={[48.2916063, 25.9345009]}
@@ -36,9 +36,7 @@ export default () => (
       style={{ height: '100%' }}
     >
       <RL.TileLayer url={MAP_TILE_LAYER} attribution={MAP_ATTRIBUTION} />
-      <RL.Marker position={[48.2916063, 25.9345009]}>
-        <RL.Popup>A pretty CSS3 popup.</RL.Popup>
-      </RL.Marker>
+      {props.children}
     </RL.Map>
   </View>
 );
