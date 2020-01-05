@@ -7,6 +7,7 @@ import { View } from 'native-base';
 import { Platform, StatusBar } from 'react-native';
 import AppNavigator from './navigation/AppNavigator';
 
+/* eslint-disable global-require, @typescript-eslint/camelcase */
 async function loadResourcesAsync() {
   await Promise.all([
     Asset.loadAsync([
@@ -15,11 +16,11 @@ async function loadResourcesAsync() {
     Font.loadAsync({
       ...Ionicons.font,
       Roboto: require('native-base/Fonts/Roboto.ttf'),
-      // eslint-disable-next-line
       Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf')
     })
   ]);
 }
+/* eslint-enable global-require, @typescript-eslint/camelcase */
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
