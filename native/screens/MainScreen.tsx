@@ -10,6 +10,7 @@ import {
   Right
 } from 'native-base';
 import Map from '../components/Map';
+import Tracker from '../components/Tracker';
 
 export default props => {
   return (
@@ -30,7 +31,9 @@ export default props => {
         </Right>
       </Header>
 
-      <Map />
+      <Map>
+        <Tracker />
+      </Map>
     </Container>
   );
 };
