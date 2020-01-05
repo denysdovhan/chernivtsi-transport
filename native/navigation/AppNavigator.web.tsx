@@ -4,10 +4,11 @@ import { createBrowserApp } from '@react-navigation/web';
 import MainScreen from '../screens/MainScreen';
 import Sidebar from '../components/Sidebar';
 
-// Use Stack Navigation for Web instead
+// TODO: Use Stack Navigation for Web instead
+// FIXME: Fix issue with opening Drawer in Web
 const DrawerNavigator = createDrawerNavigator(
   {
-    Main: { screen: MainScreen }
+    Main: MainScreen
   },
   {
     contentComponent: props => <Sidebar {...props} />

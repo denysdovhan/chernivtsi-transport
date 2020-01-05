@@ -6,7 +6,7 @@ import Sidebar from '../components/Sidebar';
 
 const DrawerNavigator = createDrawerNavigator(
   {
-    Main: { screen: MainScreen }
+    Main: MainScreen
   },
   {
     contentComponent: props => <Sidebar {...props} />
